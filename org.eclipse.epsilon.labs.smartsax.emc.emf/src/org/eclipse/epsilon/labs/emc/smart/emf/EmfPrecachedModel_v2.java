@@ -338,19 +338,7 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 	
 	public void visitEObject(EObject eObject)
 	{
-		if (traversalPlanContains(eObject.eClass())) {
-			if (!visitedEObjects.contains(eObject)) {
-				System.out.println(eObject);
-				visitedEObjects.add(eObject);
-				processEObject(eObject);
-				
-				for(EObject obj: eObject.eContents())
-				{
-					processEObject(eObject);
-				}
-			}
-		}
-		/*
+	
 		if (traversalPlanContains(eObject.eClass())) {
 			if (!visitedEObjects.contains(eObject)) {
 				System.out.println(eObject);
@@ -375,7 +363,7 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 					}
 				}
 			}
-		}*/
+		}
 	}
 
 
