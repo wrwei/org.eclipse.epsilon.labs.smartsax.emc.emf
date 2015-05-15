@@ -1,0 +1,10 @@
+model Core driver EMF {nsuri = "org.amma.dsl.jdt.core"};
+model DOM driver EMF {nsuri = "org.amma.dsl.jdt.dom"};
+model PrimitiveTypes driver EMF {nsuri = "org.amma.dsl.jdt.primitiveTypes"};
+var size = 0;
+var simpleName = SimpleName.all.first;
+size = size + SimpleName.all.size();
+var parameter = Parameter.all.first;
+size = size + Parameter.all.size();
+size.println();
+m.allContents().size().println();

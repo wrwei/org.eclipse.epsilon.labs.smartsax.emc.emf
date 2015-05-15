@@ -1,0 +1,4 @@
+model DOM driver EMF {nsuri = "org.amma.dsl.jdt.dom"};
+
+DOM.allContents().size().println();
+

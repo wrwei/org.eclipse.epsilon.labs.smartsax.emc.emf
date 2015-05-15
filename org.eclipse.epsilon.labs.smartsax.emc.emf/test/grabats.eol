@@ -1,0 +1,53 @@
+model Core driver EMF {nsuri = "org.amma.dsl.jdt.core"};
+model DOM driver EMF {nsuri = "org.amma.dsl.jdt.dom"};
+model PrimitiveTypes driver EMF {nsuri = "org.amma.dsl.jdt.primitiveTypes"};
+	/*
+	 * grabats query! Tests the Grabats query.
+	 * 
+	 * The query finds all classes (TypeDeclaration) that declare static
+	 * public methods (MethodDeclaration) whose return type is the same
+	 * class
+	 */
+var matches:Set;
+
+"".println();
+ 
+matches.addAll(TypeDeclaration.all.collect(td:TypeDeclaration|td.bodyDeclarations.select(
+	md:MethodDeclaration|md.modifiers.exists(mod:Modifier|mod.public==true)
+	and 
+	md.modifiers.exists(mod:Modifier|mod.static==true)
+	and
+	md.returnType.isTypeOf(SimpleType)
+	and 
+	md.returnType.name.fullyQualifiedName == td.name.fullyQualifiedName
+	))
+.flatten()
+.collect(names:MethodDeclaration|names.returnType.name.fullyQualifiedName)
+);
+
+
+matches.size().println();
+
+
+
+var bodydecl = BodyDeclaration.all.first;
+var abstractTypeDeclaration = AbstractTypeDeclaration.all;
+var typeDecl = TypeDeclaration.all.first;
+var typeBody = TypeDeclaration.all.bodyDeclarations;
+var typename = TypeDeclaration.all.name.fullyQualifiedName;
+var simpleName = SimpleName.all.first;
+var simpleNameQuali = SimpleName.all.fullyQualifiedName;
+
+var methodDecl = MethodDeclaration.all.first;
+var methodDeclModi = MethodDeclaration.all.modifiers;
+var methodrt = MethodDeclaration.all.returnType;
+
+var type = Type.all.first;
+
+var simpleType = SimpleType.all.first;
+var simpleTypeName = SimpleType.all.name;
+var name = Name.all.first;
+var namequali = Name.all.fullyQualifiedName;
+var modifier = Modifier.all.first;
+var modifierstatic = Modifier.all.static;
+var modifierpublic = Modifier.all.public;

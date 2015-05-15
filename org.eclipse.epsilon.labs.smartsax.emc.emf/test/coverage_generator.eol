@@ -1,0 +1,123 @@
+var allContents = m.allContents();
+
+var size = allContents.size();
+
+var counter = new Map;
+
+for(a in allContents)
+{
+	//get the type of the object
+	var class = a.type();
+	//get the number of references for the type
+	var numberOfReferences = class.eAllReferences.size();
+	
+	//get the sub map based on the number of references
+	var subMap = counter.get(numberOfRererences);
+	
+	//if the map is defined
+	if(subMap.isDefined())
+	{
+		//get the counter for the class
+		var subCounter = subMap.get(class);
+		//if the counter is defined
+		if(subCounter.isDefined())
+		{
+			//increase the counter by 1
+			subCounter = subCounter + 1;
+			//put the counter back in
+			subMap.put(class, subCounter);
+		}
+		else
+		{
+			//if the counter is not defined, put the class 
+			subCounter.put(class, 1);
+		}
+	}
+	else
+	{
+		//if the subMap is not defined, create a new map
+		var newSubMap = new Map;
+		//put the class in the map
+		newSubMap.put(class, 1);
+		//put the submap in the map
+		counter.put(numberOfReferences, newSubMap);	
+	}
+}
+
+var sum = 0;
+
+for(v in counter.valueSet())
+{
+	for(k in v.keySet())
+	{
+		k.name.print();
+		": ".print();
+		var val = v.get(k);
+		sum = sum + val;
+		val.println();
+	}
+}
+
+sum.println();
+
+size.println();
+
+var eolQueryString = "var size = 0;\n";
+
+for(clazz in getPercent(counter, sum, 10))
+{
+	//clazz.eAllStructuralFeatures.println();
+	clazz.eAllReferences.size().println();
+	eolQueryString = eolQueryString + "var " + clazz.name.firstToLowerCase() + " = " + clazz.name + ".all.first;\n";
+	eolQueryString = eolQueryString + "size = size + " + clazz.name + ".all.size();\n";
+		//eolQueryString = eolQueryString + clazz.name + ".all.size().println();\n";
+	
+	clazz.name.print();
+	": ".print();
+	var val = counter.get(clazz);
+	val.println();
+}
+
+eolQueryString = eolQueryString + "size.println();\n";
+eolQueryString.println();
+
+@cached
+operation getNumberOfContents(a: Any)
+{
+	var sum = a.eContents.size();
+	for(content in a.eContents)
+	{
+		sum = sum + getNumberOfContents(content);
+	}
+	return sum;
+}
+
+
+operation getPercent(counter: Map, size: Integer, percent : Integer)
+{
+	var result = new Set;
+	var number = size*percent/100;
+	var sum = 0;
+	for(i in Sequence{0..50})
+	{
+	}
+	
+	for(k in counter.keySet())
+	{
+		var value = counter.get(k);
+		if(value < number)
+		{
+			if(value + sum <= number and value + sum < number * 1.15)
+			{
+				sum = sum + value;
+				result.add(k);
+			}
+		}
+		if(sum > number)
+		{
+			break;
+		}
+	}
+	sum.errln();
+	return result;
+}

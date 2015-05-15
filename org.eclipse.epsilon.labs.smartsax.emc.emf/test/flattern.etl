@@ -1,0 +1,1317 @@
+rule CopyIJavaModel
+	transform s : Source!`IJavaModel`
+	to t : Target!`IJavaModel` {
+	
+ 
+	t.`path` := s.`path`;
+ 
+	t.`isReadOnly` := s.`isReadOnly`;
+ 
+	t.`javaProjects` ::= s.`javaProjects`;
+ 
+	t.`externalPackageFragmentRoots` ::= s.`externalPackageFragmentRoots`;
+}
+rule CopyIJavaProject
+	transform s : Source!`IJavaProject`
+	to t : Target!`IJavaProject` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`path` := s.`path`;
+ 
+	t.`isReadOnly` := s.`isReadOnly`;
+ 
+	t.`packageFragmentRoots` ::= s.`packageFragmentRoots`;
+ 
+	t.`externalPackageFragmentRoots` ::= s.`externalPackageFragmentRoots`;
+ 
+	t.`requiredProjects` ::= s.`requiredProjects`;
+}
+rule CopyBinaryPackageFragmentRoot
+	transform s : Source!`BinaryPackageFragmentRoot`
+	to t : Target!`BinaryPackageFragmentRoot` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`path` := s.`path`;
+ 
+	t.`isReadOnly` := s.`isReadOnly`;
+ 
+	t.`packageFragments` ::= s.`packageFragments`;
+}
+rule CopySourcePackageFragmentRoot
+	transform s : Source!`SourcePackageFragmentRoot`
+	to t : Target!`SourcePackageFragmentRoot` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`path` := s.`path`;
+ 
+	t.`isReadOnly` := s.`isReadOnly`;
+ 
+	t.`packageFragments` ::= s.`packageFragments`;
+}
+rule CopyIPackageFragment
+	transform s : Source!`IPackageFragment`
+	to t : Target!`IPackageFragment` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`path` := s.`path`;
+ 
+	t.`isReadOnly` := s.`isReadOnly`;
+ 
+	t.`isDefaultPackage` := s.`isDefaultPackage`;
+ 
+	t.`packageFragmentRoot` ::= s.`packageFragmentRoot`;
+ 
+	t.`classFiles` ::= s.`classFiles`;
+ 
+	t.`compilationUnits` ::= s.`compilationUnits`;
+}
+rule CopyICompilationUnit
+	transform s : Source!`ICompilationUnit`
+	to t : Target!`ICompilationUnit` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`path` := s.`path`;
+ 
+	t.`isReadOnly` := s.`isReadOnly`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+ 
+	t.`allType` ::= s.`allType`;
+ 
+	t.`imports` ::= s.`imports`;
+ 
+	t.`types` ::= s.`types`;
+ 
+	t.`primary` ::= s.`primary`;
+ 
+	t.`ast` ::= s.`ast`;
+}
+rule CopyIClassFile
+	transform s : Source!`IClassFile`
+	to t : Target!`IClassFile` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`path` := s.`path`;
+ 
+	t.`isReadOnly` := s.`isReadOnly`;
+ 
+	t.`isClass` := s.`isClass`;
+ 
+	t.`isInterface` := s.`isInterface`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyIImportDeclaration
+	transform s : Source!`IImportDeclaration`
+	to t : Target!`IImportDeclaration` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`isOnDemand` := s.`isOnDemand`;
+ 
+	t.`isStatic` := s.`isStatic`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+}
+rule CopyISourceRange
+	transform s : Source!`ISourceRange`
+	to t : Target!`ISourceRange` {
+	
+ 
+	t.`length` := s.`length`;
+ 
+	t.`offset` := s.`offset`;
+}
+rule CopyIType
+	transform s : Source!`IType`
+	to t : Target!`IType` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`fullyQualifiedName` := s.`fullyQualifiedName`;
+ 
+	t.`fullyQualifiedParametrizedName` := s.`fullyQualifiedParametrizedName`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+ 
+	t.`javadocRange` ::= s.`javadocRange`;
+ 
+	t.`nameRange` ::= s.`nameRange`;
+ 
+	t.`initializers` ::= s.`initializers`;
+ 
+	t.`fields` ::= s.`fields`;
+ 
+	t.`methods` ::= s.`methods`;
+ 
+	t.`types` ::= s.`types`;
+ 
+	t.`typeParameters` ::= s.`typeParameters`;
+}
+rule CopyITypeParameter
+	transform s : Source!`ITypeParameter`
+	to t : Target!`ITypeParameter` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`bounds` := s.`bounds`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+}
+rule CopyIInitializer
+	transform s : Source!`IInitializer`
+	to t : Target!`IInitializer` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+ 
+	t.`javadocRange` ::= s.`javadocRange`;
+ 
+	t.`nameRange` ::= s.`nameRange`;
+}
+rule CopyIField
+	transform s : Source!`IField`
+	to t : Target!`IField` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`constant` := s.`constant`;
+ 
+	t.`isEnumConstant` := s.`isEnumConstant`;
+ 
+	t.`typeSignature` := s.`typeSignature`;
+ 
+	t.`isVolatile` := s.`isVolatile`;
+ 
+	t.`isTransient` := s.`isTransient`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+ 
+	t.`javadocRange` ::= s.`javadocRange`;
+ 
+	t.`nameRange` ::= s.`nameRange`;
+}
+rule CopyIMethod
+	transform s : Source!`IMethod`
+	to t : Target!`IMethod` {
+	
+ 
+	t.`elementName` := s.`elementName`;
+ 
+	t.`source` := s.`source`;
+ 
+	t.`returnType` := s.`returnType`;
+ 
+	t.`isConstructor` := s.`isConstructor`;
+ 
+	t.`isMainMethod` := s.`isMainMethod`;
+ 
+	t.`exceptionTypes` := s.`exceptionTypes`;
+ 
+	t.`sourceRange` ::= s.`sourceRange`;
+ 
+	t.`javadocRange` ::= s.`javadocRange`;
+ 
+	t.`nameRange` ::= s.`nameRange`;
+ 
+	t.`parameters` ::= s.`parameters`;
+}
+rule CopyParameter
+	transform s : Source!`Parameter`
+	to t : Target!`Parameter` {
+	
+ 
+	t.`name` := s.`name`;
+ 
+	t.`type` := s.`type`;
+}
+rule CopyAST
+	transform s : Source!`AST`
+	to t : Target!`AST` {
+	
+ 
+	t.`compilationUnits` ::= s.`compilationUnits`;
+}
+rule CopyAnonymousClassDeclaration
+	transform s : Source!`AnonymousClassDeclaration`
+	to t : Target!`AnonymousClassDeclaration` {
+	
+ 
+	t.`bodyDeclarations` ::= s.`bodyDeclarations`;
+}
+rule CopyCatchClause
+	transform s : Source!`CatchClause`
+	to t : Target!`CatchClause` {
+	
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`exception` ::= s.`exception`;
+}
+rule CopyCompilationUnit
+	transform s : Source!`CompilationUnit`
+	to t : Target!`CompilationUnit` {
+	
+ 
+	t.`comments` ::= s.`comments`;
+ 
+	t.`package` ::= s.`package`;
+ 
+	t.`imports` ::= s.`imports`;
+ 
+	t.`types` ::= s.`types`;
+}
+rule CopyImportDeclaration
+	transform s : Source!`ImportDeclaration`
+	to t : Target!`ImportDeclaration` {
+	
+ 
+	t.`onDemand` := s.`onDemand`;
+ 
+	t.`static` := s.`static`;
+ 
+	t.`name` ::= s.`name`;
+}
+rule CopyMemberRef
+	transform s : Source!`MemberRef`
+	to t : Target!`MemberRef` {
+	
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`qualifier` ::= s.`qualifier`;
+}
+rule CopyMemberValuePair
+	transform s : Source!`MemberValuePair`
+	to t : Target!`MemberValuePair` {
+	
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`value` ::= s.`value`;
+}
+rule CopyMethodRef
+	transform s : Source!`MethodRef`
+	to t : Target!`MethodRef` {
+	
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`qualifier` ::= s.`qualifier`;
+ 
+	t.`parameters` ::= s.`parameters`;
+}
+rule CopyMethodRefParameter
+	transform s : Source!`MethodRefParameter`
+	to t : Target!`MethodRefParameter` {
+	
+ 
+	t.`varargs` := s.`varargs`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyModifier
+	transform s : Source!`Modifier`
+	to t : Target!`Modifier` {
+	
+ 
+	t.`abstract` := s.`abstract`;
+ 
+	t.`final` := s.`final`;
+ 
+	t.`native` := s.`native`;
+ 
+	t.`none` := s.`none`;
+ 
+	t.`private` := s.`private`;
+ 
+	t.`protected` := s.`protected`;
+ 
+	t.`public` := s.`public`;
+ 
+	t.`static` := s.`static`;
+ 
+	t.`strictfp` := s.`strictfp`;
+ 
+	t.`synchronized` := s.`synchronized`;
+ 
+	t.`transient` := s.`transient`;
+ 
+	t.`volatile` := s.`volatile`;
+}
+rule CopyPackageDeclaration
+	transform s : Source!`PackageDeclaration`
+	to t : Target!`PackageDeclaration` {
+	
+ 
+	t.`annotations` ::= s.`annotations`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`binding` ::= s.`binding`;
+}
+rule CopyTagElement
+	transform s : Source!`TagElement`
+	to t : Target!`TagElement` {
+	
+ 
+	t.`tagName` := s.`tagName`;
+ 
+	t.`nested` := s.`nested`;
+ 
+	t.`fragments` ::= s.`fragments`;
+}
+rule CopyTextElement
+	transform s : Source!`TextElement`
+	to t : Target!`TextElement` {
+	
+ 
+	t.`text` := s.`text`;
+}
+rule CopyTypeParameter
+	transform s : Source!`TypeParameter`
+	to t : Target!`TypeParameter` {
+	
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`typeBounds` ::= s.`typeBounds`;
+}
+rule CopyAnnotationTypeMemberDeclaration
+	transform s : Source!`AnnotationTypeMemberDeclaration`
+	to t : Target!`AnnotationTypeMemberDeclaration` {
+	
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`default` ::= s.`default`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyEnumConstantDeclaration
+	transform s : Source!`EnumConstantDeclaration`
+	to t : Target!`EnumConstantDeclaration` {
+	
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`arguments` ::= s.`arguments`;
+ 
+	t.`anonymousClassDeclaration` ::= s.`anonymousClassDeclaration`;
+ 
+	t.`name` ::= s.`name`;
+}
+rule CopyFieldDeclaration
+	transform s : Source!`FieldDeclaration`
+	to t : Target!`FieldDeclaration` {
+	
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`fragments` ::= s.`fragments`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyInitializer
+	transform s : Source!`Initializer`
+	to t : Target!`Initializer` {
+	
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`body` ::= s.`body`;
+}
+rule CopyMethodDeclaration
+	transform s : Source!`MethodDeclaration`
+	to t : Target!`MethodDeclaration` {
+	
+ 
+	t.`extraDimensions` := s.`extraDimensions`;
+ 
+	t.`constructor` := s.`constructor`;
+ 
+	t.`varargs` := s.`varargs`;
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`returnType` ::= s.`returnType`;
+ 
+	t.`parameters` ::= s.`parameters`;
+ 
+	t.`thrownExceptions` ::= s.`thrownExceptions`;
+ 
+	t.`typeParameters` ::= s.`typeParameters`;
+ 
+	t.`binding` ::= s.`binding`;
+}
+rule CopyAnnotationTypeDeclaration
+	transform s : Source!`AnnotationTypeDeclaration`
+	to t : Target!`AnnotationTypeDeclaration` {
+	
+ 
+	t.`localTypeDeclaration` := s.`localTypeDeclaration`;
+ 
+	t.`memberTypeDeclaration` := s.`memberTypeDeclaration`;
+ 
+	t.`packageMemberTypeDeclaration` := s.`packageMemberTypeDeclaration`;
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`bodyDeclarations` ::= s.`bodyDeclarations`;
+ 
+	t.`name` ::= s.`name`;
+}
+rule CopyEnumDeclaration
+	transform s : Source!`EnumDeclaration`
+	to t : Target!`EnumDeclaration` {
+	
+ 
+	t.`localTypeDeclaration` := s.`localTypeDeclaration`;
+ 
+	t.`memberTypeDeclaration` := s.`memberTypeDeclaration`;
+ 
+	t.`packageMemberTypeDeclaration` := s.`packageMemberTypeDeclaration`;
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`bodyDeclarations` ::= s.`bodyDeclarations`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`superInterfaceTypes` ::= s.`superInterfaceTypes`;
+ 
+	t.`enumConstants` ::= s.`enumConstants`;
+}
+rule CopyTypeDeclaration
+	transform s : Source!`TypeDeclaration`
+	to t : Target!`TypeDeclaration` {
+	
+ 
+	t.`localTypeDeclaration` := s.`localTypeDeclaration`;
+ 
+	t.`memberTypeDeclaration` := s.`memberTypeDeclaration`;
+ 
+	t.`packageMemberTypeDeclaration` := s.`packageMemberTypeDeclaration`;
+ 
+	t.`interface` := s.`interface`;
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`javadoc` ::= s.`javadoc`;
+ 
+	t.`bodyDeclarations` ::= s.`bodyDeclarations`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`superclassType` ::= s.`superclassType`;
+ 
+	t.`superInterfaceTypes` ::= s.`superInterfaceTypes`;
+ 
+	t.`typeParameters` ::= s.`typeParameters`;
+}
+rule CopyBlockComment
+	transform s : Source!`BlockComment`
+	to t : Target!`BlockComment` {
+	
+ 
+	t.`alternateRoot` ::= s.`alternateRoot`;
+}
+rule CopyJavadoc
+	transform s : Source!`Javadoc`
+	to t : Target!`Javadoc` {
+	
+ 
+	t.`alternateRoot` ::= s.`alternateRoot`;
+ 
+	t.`tags` ::= s.`tags`;
+}
+rule CopyLineComment
+	transform s : Source!`LineComment`
+	to t : Target!`LineComment` {
+	
+ 
+	t.`alternateRoot` ::= s.`alternateRoot`;
+}
+rule CopyArrayAccess
+	transform s : Source!`ArrayAccess`
+	to t : Target!`ArrayAccess` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`array` ::= s.`array`;
+ 
+	t.`index` ::= s.`index`;
+}
+rule CopyArrayCreation
+	transform s : Source!`ArrayCreation`
+	to t : Target!`ArrayCreation` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`dimensions` ::= s.`dimensions`;
+ 
+	t.`initializer` ::= s.`initializer`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyArrayInitializer
+	transform s : Source!`ArrayInitializer`
+	to t : Target!`ArrayInitializer` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`expressions` ::= s.`expressions`;
+}
+rule CopyAssignment
+	transform s : Source!`Assignment`
+	to t : Target!`Assignment` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	// t.`operator` := s.`operator`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`leftHandSide` ::= s.`leftHandSide`;
+ 
+	t.`rightHandSide` ::= s.`rightHandSide`;
+}
+rule CopyBooleanLiteral
+	transform s : Source!`BooleanLiteral`
+	to t : Target!`BooleanLiteral` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`booleanValue` := s.`booleanValue`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+}
+rule CopyCastExpression
+	transform s : Source!`CastExpression`
+	to t : Target!`CastExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyCharacterLiteral
+	transform s : Source!`CharacterLiteral`
+	to t : Target!`CharacterLiteral` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`charValue` := s.`charValue`;
+ 
+	t.`escapedValue` := s.`escapedValue`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+}
+rule CopyClassInstanceCreation
+	transform s : Source!`ClassInstanceCreation`
+	to t : Target!`ClassInstanceCreation` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`arguments` ::= s.`arguments`;
+ 
+	t.`anonymousClassDeclaration` ::= s.`anonymousClassDeclaration`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`type` ::= s.`type`;
+ 
+	t.`typeArguments` ::= s.`typeArguments`;
+}
+rule CopyConditionalExpression
+	transform s : Source!`ConditionalExpression`
+	to t : Target!`ConditionalExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`elseExpression` ::= s.`elseExpression`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`thenExpression` ::= s.`thenExpression`;
+}
+rule CopyFieldAccess
+	transform s : Source!`FieldAccess`
+	to t : Target!`FieldAccess` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`name` ::= s.`name`;
+}
+rule CopyInfixExpression
+	transform s : Source!`InfixExpression`
+	to t : Target!`InfixExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	// t.`operator` := s.`operator`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`extendedOperands` ::= s.`extendedOperands`;
+ 
+	t.`leftOperand` ::= s.`leftOperand`;
+ 
+	t.`rightOperand` ::= s.`rightOperand`;
+}
+rule CopyInstanceofExpression
+	transform s : Source!`InstanceofExpression`
+	to t : Target!`InstanceofExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`leftOperand` ::= s.`leftOperand`;
+ 
+	t.`rightOperand` ::= s.`rightOperand`;
+}
+rule CopyMethodInvocation
+	transform s : Source!`MethodInvocation`
+	to t : Target!`MethodInvocation` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`arguments` ::= s.`arguments`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`typeArguments` ::= s.`typeArguments`;
+ 
+	t.`methodBinding` ::= s.`methodBinding`;
+}
+rule CopyNullLiteral
+	transform s : Source!`NullLiteral`
+	to t : Target!`NullLiteral` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+}
+rule CopyNumberLiteral
+	transform s : Source!`NumberLiteral`
+	to t : Target!`NumberLiteral` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`token` := s.`token`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+}
+rule CopyParenthesizedExpression
+	transform s : Source!`ParenthesizedExpression`
+	to t : Target!`ParenthesizedExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopyPostfixExpression
+	transform s : Source!`PostfixExpression`
+	to t : Target!`PostfixExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	// t.`operator` := s.`operator`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`operand` ::= s.`operand`;
+}
+rule CopyPrefixExpression
+	transform s : Source!`PrefixExpression`
+	to t : Target!`PrefixExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	// t.`operator` := s.`operator`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`operand` ::= s.`operand`;
+}
+rule CopyStringLiteral
+	transform s : Source!`StringLiteral`
+	to t : Target!`StringLiteral` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`escapedValue` := s.`escapedValue`;
+ 
+	t.`literalValue` := s.`literalValue`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+}
+rule CopySuperFieldAccess
+	transform s : Source!`SuperFieldAccess`
+	to t : Target!`SuperFieldAccess` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`qualifier` ::= s.`qualifier`;
+}
+rule CopySuperMethodInvocation
+	transform s : Source!`SuperMethodInvocation`
+	to t : Target!`SuperMethodInvocation` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`arguments` ::= s.`arguments`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`qualifier` ::= s.`qualifier`;
+ 
+	t.`typeArguments` ::= s.`typeArguments`;
+}
+rule CopyThisExpression
+	transform s : Source!`ThisExpression`
+	to t : Target!`ThisExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`qualifier` ::= s.`qualifier`;
+}
+rule CopyTypeLiteral
+	transform s : Source!`TypeLiteral`
+	to t : Target!`TypeLiteral` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyVariableDeclarationExpression
+	transform s : Source!`VariableDeclarationExpression`
+	to t : Target!`VariableDeclarationExpression` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`fragments` ::= s.`fragments`;
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyAssertStatement
+	transform s : Source!`AssertStatement`
+	to t : Target!`AssertStatement` {
+	
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`message` ::= s.`message`;
+}
+rule CopyBlock
+	transform s : Source!`Block`
+	to t : Target!`Block` {
+	
+ 
+	t.`statements` ::= s.`statements`;
+}
+rule CopyBreakStatement
+	transform s : Source!`BreakStatement`
+	to t : Target!`BreakStatement` {
+	
+ 
+	t.`label` ::= s.`label`;
+}
+rule CopyConstructorInvocation
+	transform s : Source!`ConstructorInvocation`
+	to t : Target!`ConstructorInvocation` {
+	
+ 
+	t.`arguments` ::= s.`arguments`;
+ 
+	t.`typeArguments` ::= s.`typeArguments`;
+}
+rule CopyContinueStatement
+	transform s : Source!`ContinueStatement`
+	to t : Target!`ContinueStatement` {
+	
+ 
+	t.`label` ::= s.`label`;
+}
+rule CopyDoStatement
+	transform s : Source!`DoStatement`
+	to t : Target!`DoStatement` {
+	
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopyEmptyStatement
+	transform s : Source!`EmptyStatement`
+	to t : Target!`EmptyStatement` {
+	
+}
+rule CopyEnhancedForStatement
+	transform s : Source!`EnhancedForStatement`
+	to t : Target!`EnhancedForStatement` {
+	
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`parameter` ::= s.`parameter`;
+}
+rule CopyExpressionStatement
+	transform s : Source!`ExpressionStatement`
+	to t : Target!`ExpressionStatement` {
+	
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopyForStatement
+	transform s : Source!`ForStatement`
+	to t : Target!`ForStatement` {
+	
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`initializers` ::= s.`initializers`;
+ 
+	t.`updaters` ::= s.`updaters`;
+}
+rule CopyIfStatement
+	transform s : Source!`IfStatement`
+	to t : Target!`IfStatement` {
+	
+ 
+	t.`elseStatement` ::= s.`elseStatement`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`thenStatement` ::= s.`thenStatement`;
+}
+rule CopyLabeledStatement
+	transform s : Source!`LabeledStatement`
+	to t : Target!`LabeledStatement` {
+	
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`label` ::= s.`label`;
+}
+rule CopyReturnStatement
+	transform s : Source!`ReturnStatement`
+	to t : Target!`ReturnStatement` {
+	
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopySuperConstructorInvocation
+	transform s : Source!`SuperConstructorInvocation`
+	to t : Target!`SuperConstructorInvocation` {
+	
+ 
+	t.`arguments` ::= s.`arguments`;
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`typeArguments` ::= s.`typeArguments`;
+}
+rule CopySwitchCase
+	transform s : Source!`SwitchCase`
+	to t : Target!`SwitchCase` {
+	
+ 
+	t.`default` := s.`default`;
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopySwitchStatement
+	transform s : Source!`SwitchStatement`
+	to t : Target!`SwitchStatement` {
+	
+ 
+	t.`expression` ::= s.`expression`;
+ 
+	t.`statements` ::= s.`statements`;
+}
+rule CopySynchronizedStatement
+	transform s : Source!`SynchronizedStatement`
+	to t : Target!`SynchronizedStatement` {
+	
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopyThrowStatement
+	transform s : Source!`ThrowStatement`
+	to t : Target!`ThrowStatement` {
+	
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopyTryStatement
+	transform s : Source!`TryStatement`
+	to t : Target!`TryStatement` {
+	
+ 
+	t.`catchClauses` ::= s.`catchClauses`;
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`finally` ::= s.`finally`;
+}
+rule CopyTypeDeclarationStatement
+	transform s : Source!`TypeDeclarationStatement`
+	to t : Target!`TypeDeclarationStatement` {
+	
+ 
+	t.`declaration` ::= s.`declaration`;
+}
+rule CopyVariableDeclarationStatement
+	transform s : Source!`VariableDeclarationStatement`
+	to t : Target!`VariableDeclarationStatement` {
+	
+ 
+	t.`fragments` ::= s.`fragments`;
+ 
+	t.`modifiers` ::= s.`modifiers`;
+ 
+	t.`type` ::= s.`type`;
+}
+rule CopyWhileStatement
+	transform s : Source!`WhileStatement`
+	to t : Target!`WhileStatement` {
+	
+ 
+	t.`body` ::= s.`body`;
+ 
+	t.`expression` ::= s.`expression`;
+}
+rule CopyArrayType
+	transform s : Source!`ArrayType`
+	to t : Target!`ArrayType` {
+	
+ 
+	t.`dimensions` := s.`dimensions`;
+ 
+	t.`componentType` ::= s.`componentType`;
+ 
+	t.`elementType` ::= s.`elementType`;
+}
+rule CopyParameterizedType
+	transform s : Source!`ParameterizedType`
+	to t : Target!`ParameterizedType` {
+	
+ 
+	t.`type` ::= s.`type`;
+ 
+	t.`typeArguments` ::= s.`typeArguments`;
+}
+rule CopyPrimitiveType
+	transform s : Source!`PrimitiveType`
+	to t : Target!`PrimitiveType` {
+	
+ 
+	t.`code` := s.`code`;
+}
+rule CopyQualifiedType
+	transform s : Source!`QualifiedType`
+	to t : Target!`QualifiedType` {
+	
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`qualifier` ::= s.`qualifier`;
+}
+rule CopySimpleType
+	transform s : Source!`SimpleType`
+	to t : Target!`SimpleType` {
+	
+ 
+	t.`name` ::= s.`name`;
+}
+rule CopyWildcardType
+	transform s : Source!`WildcardType`
+	to t : Target!`WildcardType` {
+	
+ 
+	t.`upperBound` := s.`upperBound`;
+ 
+	t.`bound` ::= s.`bound`;
+}
+rule CopySingleVariableDeclaration
+	transform s : Source!`SingleVariableDeclaration`
+	to t : Target!`SingleVariableDeclaration` {
+	
+ 
+	t.`extraDimensions` := s.`extraDimensions`;
+ 
+	t.`varargs` := s.`varargs`;
+ 
+	t.`initializer` ::= s.`initializer`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`type` ::= s.`type`;
+ 
+	t.`modifiers` ::= s.`modifiers`;
+}
+rule CopyVariableDeclarationFragment
+	transform s : Source!`VariableDeclarationFragment`
+	to t : Target!`VariableDeclarationFragment` {
+	
+ 
+	t.`extraDimensions` := s.`extraDimensions`;
+ 
+	t.`initializer` ::= s.`initializer`;
+ 
+	t.`name` ::= s.`name`;
+}
+rule CopyQualifiedName
+	transform s : Source!`QualifiedName`
+	to t : Target!`QualifiedName` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`fullyQualifiedName` := s.`fullyQualifiedName`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`name` ::= s.`name`;
+ 
+	t.`qualifier` ::= s.`qualifier`;
+}
+rule CopySimpleName
+	transform s : Source!`SimpleName`
+	to t : Target!`SimpleName` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`fullyQualifiedName` := s.`fullyQualifiedName`;
+ 
+	t.`identifier` := s.`identifier`;
+ 
+	t.`declaration` := s.`declaration`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+}
+rule CopyMarkerAnnotation
+	transform s : Source!`MarkerAnnotation`
+	to t : Target!`MarkerAnnotation` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`typeName` ::= s.`typeName`;
+}
+rule CopyNormalAnnotation
+	transform s : Source!`NormalAnnotation`
+	to t : Target!`NormalAnnotation` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`typeName` ::= s.`typeName`;
+ 
+	t.`values` ::= s.`values`;
+}
+rule CopySingleMemberAnnotation
+	transform s : Source!`SingleMemberAnnotation`
+	to t : Target!`SingleMemberAnnotation` {
+	
+ 
+	t.`resolveBoxing` := s.`resolveBoxing`;
+ 
+	t.`resolveUnboxing` := s.`resolveUnboxing`;
+ 
+	t.`typeBinding` ::= s.`typeBinding`;
+ 
+	t.`typeName` ::= s.`typeName`;
+ 
+	t.`value` ::= s.`value`;
+}
+
+

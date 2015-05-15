@@ -1,0 +1,10 @@
+model OO driver EMF {nsuri = "http://www.eclipse.org/emf/2002/Ecore"};
+
+EAttribute.all.name.println();
+ 
+var x:EAttribute = EAttribute.all.first;
+
+x.many.println();
+
+for (c in EClass.allInstances) {
+}

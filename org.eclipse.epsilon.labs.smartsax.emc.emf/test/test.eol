@@ -1,0 +1,4 @@
+model test driver EMF {nsuri = "http://test/1.0"};
+
+var f = F.all.first();
+var g = G.all.first();

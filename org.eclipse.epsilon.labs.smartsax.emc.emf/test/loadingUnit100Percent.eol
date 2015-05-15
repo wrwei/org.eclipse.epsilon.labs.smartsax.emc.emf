@@ -1,0 +1,101 @@
+var allContents = m.allContents();
+
+var size = allContents.size();
+
+var counter = new Map;
+
+for(a in allContents)
+{
+	var count = counter.get(a.type());
+	if(count.isDefined())
+	{
+		count = count + 1;
+		counter.put(a.type(), count);
+	}
+	else
+	{
+		counter.put(a.type(), 1);
+	}
+}
+
+
+var sequence = new Sequence;
+
+for(key in counter.keySet())
+{
+	sequence.add(Sequence{key, counter.get(key)});
+}
+
+sequence = sequence.sortBy(x|-x.at(1));
+
+
+var sum = 0;
+
+
+for(k in counter.keySet())
+{
+	k.name.print();
+	": ".print();
+	var val = counter.get(k);
+	sum = sum + val;
+	val.println();
+}
+
+sum.println();
+
+size.println();
+
+var eolQueryString = "model Core driver EMF {nsuri = \"org.amma.dsl.jdt.core\"};\nmodel DOM driver EMF {nsuri = \"org.amma.dsl.jdt.dom\"};\nmodel PrimitiveTypes driver EMF {nsuri = \"org.amma.dsl.jdt.primitiveTypes\"};\nvar size = 0;\n";
+
+for(clazz in getPercent(sequence, sum, 100))
+{
+	eolQueryString = eolQueryString + "var " + clazz.name.firstToLowerCase() + " = " + clazz.name + ".all.first;\n";
+	for(feature in clazz.eAllAttributes)
+	{
+		eolQueryString = eolQueryString + "size = size + " + clazz.name + ".all." + feature.name + ".size();\n";
+	}
+	eolQueryString = eolQueryString + "size = size + " + clazz.name + ".all.size();\n";
+	
+	for(feature in clazz.eAllReferences)
+	{
+		if(not feature.containment)
+		{
+			eolQueryString = eolQueryString + "size = size + " + feature.eType.name + ".all.size();\n"; 
+		}
+	}
+	
+	clazz.name.print();
+	": ".print();
+	var val = counter.get(clazz);
+	val.println();
+}
+
+eolQueryString = eolQueryString + "size.println();\n";
+eolQueryString = eolQueryString + "m.allContents().size().println();\n";
+eolQueryString.println();
+
+
+operation getPercent(seq: Sequence, size: Integer, percent : Integer)
+{
+	var result = new Set;
+	var number = size*percent/100;
+	var sum = 0;
+	for(k in seq)
+	{
+		var value = k.at(1);
+		if(value < number)
+		{
+			if(value + sum <= number or value + sum < number * 1.05)
+			{
+				sum = sum + value;
+				result.add(k.at(0));
+			}
+		}
+		if(sum > number)
+		{
+			break;
+		}
+	}
+	sum.errln();
+	return result;
+}

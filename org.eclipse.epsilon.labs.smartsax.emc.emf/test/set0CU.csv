@@ -1,0 +1,6 @@
+Normal loading time,Normal execution time,Normal memory consumption,Partial loading time,Partial execution time,Partial memory consumption
+5378,593,161061408,857,229,64424544
+799,283,161061408,701,220,96636848
+758,468,161061392,763,386,96899080
+750,355,128849128,826,263,96636896
+778,438,128849176,1015,415,128849192

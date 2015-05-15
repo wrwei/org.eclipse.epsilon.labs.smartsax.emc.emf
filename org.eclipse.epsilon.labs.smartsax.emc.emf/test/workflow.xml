@@ -1,0 +1,9 @@
+<project default = "main">
+	<target name="main">
+		<epsilon.eol>
+			<![CDATA[
+				"Hello world".println();
+			]]>
+		</epsilon.eol>
+	</target>
+</project>

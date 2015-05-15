@@ -1,0 +1,8 @@
+model oo driver EMF {nsuri = "OO"};
+
+
+var a = Class.all;
+a.size.println();
+
+
+oo.allContents().size().println();
