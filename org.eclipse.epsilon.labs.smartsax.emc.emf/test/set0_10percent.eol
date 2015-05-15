@@ -19,4 +19,4 @@ size = size + IType.all.size();
 var modifier = Modifier.all.first();
 size = size + Modifier.all.size();
 size.println();
-m.allContents().size().println();
+m.allContents().size().println(); 

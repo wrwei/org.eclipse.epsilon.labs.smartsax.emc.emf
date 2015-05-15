@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -33,26 +34,31 @@ import org.eclipse.epsilon.eol.visitor.resolution.variable.impl.VariableResolver
 import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveMetamodel;
 import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveType;
 
-public class EmfPrecachedModel_v2 extends EmfModel{
-
+public class EmfPrecachedModel_v3 extends EmfModel{
+	
 	protected ArrayList<EffectiveMetamodel> effectiveMetamodels = new ArrayList<EffectiveMetamodel>();
 
-	protected HashMap<String, HashMap<String, ArrayList<String>>> traversalPlans = new HashMap<String, HashMap<String,ArrayList<String>>>();
-	
-	protected HashMap<EffectiveType, ArrayList<EClass>> effectiveTypeToEClass = new HashMap<EffectiveType, ArrayList<EClass>>();
-	protected HashMap<EffectiveType, ArrayList<EReference>> effectiveTypeToEReference = new HashMap<EffectiveType, ArrayList<EReference>>();
+	protected HashMap<EPackage, HashMap<EClass, ArrayList<EReference>>> traversalPlans = new HashMap<EPackage, HashMap<EClass,ArrayList<EReference>>>();
 
 	protected HashMap<String, ArrayList<String>> placeHolderObjects = new HashMap<String, ArrayList<String>>();
 
+	
 	protected ArrayList<EClass> visitedClasses = new ArrayList<EClass>();
 
-	ArrayList<EClass> allOfKinds = new ArrayList<EClass>();
-	ArrayList<EClass> allOfTypes = new ArrayList<EClass>();
+	HashSet<EClass> allOfKinds = new HashSet<EClass>();
+	HashSet<EClass> allOfTypes = new HashSet<EClass>();
 
 	protected boolean smartLoading = true;
+
+	public void setEffectiveMetamodels(
+			ArrayList<EffectiveMetamodel> effectiveMetamodels) {
+		this.effectiveMetamodels = effectiveMetamodels;
+	}
 	
-	protected ArrayList<EObject> visitedEObjects = new ArrayList<EObject>();
-	
+	public void setSmartLoading(boolean smartLoading) {
+		this.smartLoading = smartLoading;
+	}
+
 	
 	public static void main(String[] args) throws URISyntaxException, Exception {
 		for(int i = 0; i < 1; i++)
@@ -60,7 +66,7 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 			EolModule eolModule = new EolModule();
 			eolModule.parse(new File("test/set0_10percent.eol"));
 			
-			EmfPrecachedModel_v2 smartModel = new EmfPrecachedModel_v2();
+			EmfPrecachedModel_v3 smartModel = new EmfPrecachedModel_v3();
 			smartModel.setName("m");
 			smartModel.setModelFile(new File("test/set0.xmi").getAbsolutePath());
 			smartModel.setMetamodelFile(new File("test/JDTAST.ecore").getAbsolutePath());
@@ -99,15 +105,34 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 		}
 	}
 
-	public void setEffectiveMetamodels(
-			ArrayList<EffectiveMetamodel> effectiveMetamodels) {
-		this.effectiveMetamodels = effectiveMetamodels;
-	}
 	
-	public void setSmartLoading(boolean smartLoading) {
-		this.smartLoading = smartLoading;
-	}
 	
+	public void reconcile()
+	{
+		//for each epackage, add to 'actualObjectToLoad' considering 
+		for(EPackage ePackage: packages)
+		{
+			//for each eclassifier
+			for(EClassifier eClassifier: ePackage.getEClassifiers())
+			{
+				//if eclassifier is a eclass
+				if (eClassifier instanceof EClass) {
+					
+					//cast to eClass
+					EClass eClass = (EClass) eClassifier;
+					
+					//clear visited class
+					visitedClasses.clear();
+					
+					//visit EClass
+					planTraversal(eClass);
+				}
+			}
+		}
+		
+		
+	}
+
 	public void loadModelFromUri() throws EolModelLoadingException {
 		ResourceSet resourceSet = createResourceSet();
 		
@@ -162,117 +187,7 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 		effectiveMetamodels = null;
 
 	}
-	
-	public void addToEffectiveTypeToEClass(EffectiveType effectiveType, EClass eClass)
-	{
-		if (effectiveTypeToEClass.containsKey(effectiveType)) {
-			ArrayList<EClass> relatedEClasses = effectiveTypeToEClass.get(effectiveType);
-			if (relatedEClasses != null) {
-				if (!relatedEClasses.contains(eClass)) {
-					relatedEClasses.add(eClass);
-				}
-			}
-			else {
-				relatedEClasses = new ArrayList<EClass>();
-				relatedEClasses.add(eClass);
-				effectiveTypeToEClass.put(effectiveType, relatedEClasses);
-			}
-		}
-		else {
-			ArrayList<EClass> relatedEClasses = new ArrayList<EClass>();
-			relatedEClasses.add(eClass);
-			effectiveTypeToEClass.put(effectiveType, relatedEClasses);
-		}
-	}
-	
-	public void addToEffectiveTypeToEReference(EffectiveType effectiveType, EReference eReference)
-	{
-		if (effectiveTypeToEReference.containsKey(effectiveType)) {
-			ArrayList<EReference> relatedEClasses = effectiveTypeToEReference.get(effectiveType);
-			if (relatedEClasses != null) {
-				if (!relatedEClasses.contains(eReference)) {
-					relatedEClasses.add(eReference);
-				}
-			}
-			else {
-				relatedEClasses = new ArrayList<EReference>();
-				relatedEClasses.add(eReference);
-				effectiveTypeToEReference.put(effectiveType, relatedEClasses);
-			}
-		}
-		else {
-			ArrayList<EReference> relatedEClasses = new ArrayList<EReference>();
-			relatedEClasses.add(eReference);
-			effectiveTypeToEReference.put(effectiveType, relatedEClasses);
-		}
 
-	}
-
-	public void expandEffectiveMetamodel()
-	{
-		for(EffectiveMetamodel em: effectiveMetamodels)
-		{
-			EPackage ePackage = getEPackage(em.getName());
-			if (ePackage != null) {
-				
-				for(EffectiveType et: em.getAllOfKind())
-				{
-					EClass eClass = (EClass) ePackage.getEClassifier(et.getName());
-					if (eClass != null) {
-						
-						allOfKinds.add(eClass);
-						cachedKinds.add(eClass);	
-
-						addToEffectiveTypeToEClass(et, eClass);
-						for(EClassifier every: ePackage.getEClassifiers())
-						{
-							if (every instanceof EClass) {
-								EClass e = (EClass) every;
-								if (e.getEAllSuperTypes().contains(eClass)) {
-									addToEffectiveTypeToEClass(et, e);
-
-								}
-							}
-						}
-						
-						for(EClass superType: eClass.getEAllSuperTypes())
-						{
-							addToEffectiveTypeToEClass(et, superType);
-						}
-					}
-				}
-				for(EffectiveType et: em.getAllOfType())
-				{
-					EClass eClass = (EClass) ePackage.getEClassifier(et.getName());
-					if (eClass != null) {
-						
-						allOfTypes.add(eClass);
-						cachedTypes.add(eClass);
-
-						addToEffectiveTypeToEClass(et, eClass);
-						
-						for(EClass superType: eClass.getEAllSuperTypes())
-						{
-							addToEffectiveTypeToEClass(et, superType);
-						}
-
-					}
-				}
-			}
-		}
-	}
-	
-	public EPackage getEPackage(String name)
-	{
-		for(EPackage ep: packages)
-		{
-			if (ep.getName().equals(name)) {
-				return ep;
-			}
-		}
-		return null;
-	}
-	
 	public void populateCaches() throws Exception
 	{
 		reconcile();
@@ -283,22 +198,60 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 				visitEObject(eObject);
 			}
 		}
-		
+	}
+	
+	public ArrayList<EReference> getReferencesToVisit(EClass eClass)
+	{
+		EPackage ePackage = eClass.getEPackage();
+		HashMap<EClass, ArrayList<EReference>> subMap = traversalPlans.get(ePackage);
+		if (subMap != null) {
+			return subMap.get(eClass);
+		}
+		return null;
+	}
+
+	
+	public void visitEObject(EObject eObject)
+	{
+	
+		if (traversalPlanContains(eObject.eClass())) {
+			processEObject(eObject);
+			
+			
+			ArrayList<EReference> refs = getReferencesToVisit(eObject.eClass());
+			if (refs != null) {
+				for(EReference eReference: refs)
+				{
+					Object obj = eObject.eGet(eReference);
+					if (obj != null) {
+						if (eReference.isMany()) {
+							Collection<?> collection = (Collection<?>) obj;
+							for(Object eObj: collection)
+							{
+								visitEObject((EObject) eObj);
+							}
+						}
+						else {
+							visitEObject((EObject) obj);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public boolean traversalPlanContains(EClass eClass)
 	{
 		EPackage ePackage = eClass.getEPackage();
-		String packageName = ePackage.getName();
-		HashMap<String, ArrayList<String>> subMap = traversalPlans.get(packageName);
+		HashMap<EClass, ArrayList<EReference>> subMap = traversalPlans.get(ePackage);
 		if (subMap != null) {
-			if (subMap.containsKey(eClass.getName())) {
+			if (subMap.containsKey(eClass)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public void processEObject(EObject eObject)
 	{
 		for(EClass eClass : allOfKinds)
@@ -315,87 +268,8 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 		}
 
 	}
-	
-	public ArrayList<EReference> getReferencesToVisit(EClass eClass)
-	{
-		ArrayList<EReference> result = new ArrayList<EReference>();
-		EPackage ePackage = eClass.getEPackage();
-		String packageName = ePackage.getName();
-		HashMap<String, ArrayList<String>> subMap = traversalPlans.get(packageName);
-		if (subMap != null) {
-			ArrayList<String> features = subMap.get(eClass.getName());
-			if (features != null) {
-				for(String feature: features)
-				{
-					EReference ref = (EReference) eClass.getEStructuralFeature(feature);
-					if (ref != null) {
-						result.add(ref);	
-					}
-					
-				}
-			}
-		}
-		return result;
-	}
-
-	
-	public void visitEObject(EObject eObject)
-	{
-	
-		if (traversalPlanContains(eObject.eClass())) {
-			processEObject(eObject);
-			
-			for(EObject obj: eObject.eContents())
-			{
-				visitEObject(obj);
-			}
-//			ArrayList<EReference> refs = getReferencesToVisit(eObject.eClass());
-//			for(EReference eReference: refs)
-//			{
-//				Object obj = eObject.eGet(eReference);
-//				if (obj != null) {
-//					if (eReference.isMany()) {
-//						Collection<?> collection = (Collection<?>) obj;
-//						for(Object eObj: collection)
-//						{
-//							visitEObject((EObject) eObj);
-//						}
-//					}
-//					else {
-//						visitEObject((EObject) obj);
-//					}
-//				}
-//			}
-		}
-	}
 
 
-	
-	public void reconcile()
-	{
-		//for each epackage, add to 'actualObjectToLoad' considering 
-		for(EPackage ePackage: packages)
-		{
-			//for each eclassifier
-			for(EClassifier eClassifier: ePackage.getEClassifiers())
-			{
-				//if eclassifier is a eclass
-				if (eClassifier instanceof EClass) {
-					
-					//cast to eClass
-					EClass eClass = (EClass) eClassifier;
-					
-					//clear visited class
-					visitedClasses.clear();
-					
-					//visit EClass
-					planTraversal(eClass);
-				}
-			}
-		}
-		
-		
-	}
 
 	
 	public void planTraversal(EClass eClass)
@@ -478,8 +352,8 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 					EClass actual = (EClass) ePackage.getEClassifier(className);
 					//if the current class under question is a sub class of the mec, should return true
 					
-					allOfKinds.add(kind);
-					cachedKinds.add(kind);	
+						allOfKinds.add(kind);	
+						cachedKinds.add(kind);	
 
 					
 					if(actual.getEAllSuperTypes().contains(kind))
@@ -507,8 +381,9 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 					//get the eclass for the class under question
 					EClass actual = (EClass) ePackage.getEClassifier(className);
 					
-					allOfTypes.add(type);
-					cachedTypes.add(type);
+						allOfTypes.add(type);	
+						cachedTypes.add(type);	
+					
 
 					//if the class under question is a super class of the mec, should return true
 					if (type.getEAllSuperTypes() != null && type.getEAllSuperTypes().contains(actual)) 
@@ -562,54 +437,51 @@ public class EmfPrecachedModel_v2 extends EmfModel{
 		return false;
 	}
 	
-	//add classes and references to visit and fill up the objectsAndRefNamesToVisit map
+	
 	public void addToTraversalPlan(EClass eClass, EReference eReference)
 	{
-		//get the epackage name
-		String epackage = eClass.getEPackage().getName();
+		EPackage epackage = eClass.getEPackage();
 		//get the submap with the epackage name
-		HashMap<String, ArrayList<String>> subMap = traversalPlans.get(epackage);
+		HashMap<EClass, ArrayList<EReference>> subMap = traversalPlans.get(epackage);
 		//if sub map is null
 		if (subMap == null) {
 			//create new sub map
-			subMap = new HashMap<String, ArrayList<String>>();
+			subMap = new HashMap<EClass, ArrayList<EReference>>();
 			//create new refs for the map
-			ArrayList<String> refs = new ArrayList<String>();
+			ArrayList<EReference> refs = new ArrayList<EReference>();
 			//if eReference is not null
 			if (eReference != null) {
 				//add the eReference to the ref
-				refs.add(eReference.getName());
+				refs.add(eReference);
 			}
 			//add the ref to the sub map
-			subMap.put(eClass.getName(), refs);
+			subMap.put(eClass, refs);
 			//add the sub map to objectsAndRefNamesToVisit
 			traversalPlans.put(epackage, subMap);
 		}
 		else {
 			//if sub map is not null, get the refs by class name
-			ArrayList<String> refs = subMap.get(eClass.getName());
+			ArrayList<EReference> refs = subMap.get(eClass);
 
 			//if refs is null, create new refs and add the ref and then add to sub map
 			if (refs == null) {
-				refs = new ArrayList<String>();
+				refs = new ArrayList<EReference>();
 				if(eReference != null)
 				{
-					refs.add(eReference.getName());
+					refs.add(eReference);
 				}
-				subMap.put(eClass.getName(), refs);
+				subMap.put(eClass, refs);
 			}
 			//if ref is not null, add the ref
 			else {
 				if (eReference != null) {
-					if (!refs.contains(eReference.getName())) {
-						refs.add(eReference.getName());	
+					if (!refs.contains(eReference)) {
+						refs.add(eReference);	
 					}
 				}
 			}
 		}
-	}
-
-	
+	}	
 	
 	public void insertPlaceHolderOjbects(EPackage ePackage, EClass eClass)
 	{
