@@ -32,7 +32,8 @@ import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveMetamodel;
 import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveType;
 import org.eclipse.epsilon.labs.smartsax.emc.emf.EmfSmartModel;
 
-public class EmfIndexedSmartModel extends EmfSmartModel implements IAbstractOperationContributorProvider{
+public class EmfIndexedSmartModel extends EmfSmartModel { 
+//implements IAbstractOperationContributorProvider{
 
 	protected HashMap<EClass, HashMap<String, HashMap<Object, EObject>>> index = new HashMap<EClass, HashMap<String,HashMap<Object,EObject>>>();	
 	
@@ -154,58 +155,58 @@ public class EmfIndexedSmartModel extends EmfSmartModel implements IAbstractOper
 		}
 	}
 
-	@Override
-	public IAbstractOperationContributor getAbstractOperationContributor(
-			Object target) {
-
-		
-		System.out.println("called");
-		if (target instanceof FutureList<?>) {
-			return new IAbstractOperationContributor() {
-				@Override
-				public AbstractOperation getAbstractOperation(String name) {
-					if (name.equalsIgnoreCase("select")) {
-						
-						return new SelectOperation() {
-							
-							@Override
-							public Object execute(Object target,
-									Variable iterator, Expression expression,
-									IEolContext context, boolean returnOnFirstMatch)
-									throws EolRuntimeException {
-								
-								FutureList<?> list = (FutureList<?>) target;
-								
-								if (expression instanceof EqualsOperatorExpression) {
-									EqualsOperatorExpression equalsOperatorExpression = (EqualsOperatorExpression) expression;
-									if (equalsOperatorExpression.getFirstOperand() instanceof PropertyCallExpression) {
-										PropertyCallExpression propertyCallExpression = (PropertyCallExpression) equalsOperatorExpression.getFirstOperand();
-										if (propertyCallExpression.getTargetExpression() instanceof NameExpression) {
-											ArrayList<Object> results = new ArrayList<Object>();
-											results.add(list.getType() + "." + propertyCallExpression.getPropertyNameExpression().getName() + "=" + 
-													context.getExecutorFactory().executeAST(equalsOperatorExpression.getSecondOperand(), context));
-											return results;
-										}
-									}
-								}
-								return new SelectOperation().execute(target, iterator, expression, context);
-							}
-						};
-					}
-					return null;
-				}
-			};
-		}
-		return null;
-	
-	}
+//	@Override
+//	public IAbstractOperationContributor getAbstractOperationContributor(
+//			Object target) {
+//
+//		
+//		System.out.println("called");
+//		if (target instanceof FutureList<?>) {
+//			return new IAbstractOperationContributor() {
+//				@Override
+//				public AbstractOperation getAbstractOperation(String name) {
+//					if (name.equalsIgnoreCase("select")) {
+//						
+//						return new SelectOperation() {
+//							
+//							@Override
+//							public Object execute(Object target,
+//									Variable iterator, Expression expression,
+//									IEolContext context, boolean returnOnFirstMatch)
+//									throws EolRuntimeException {
+//								
+//								FutureList<?> list = (FutureList<?>) target;
+//								
+//								if (expression instanceof EqualsOperatorExpression) {
+//									EqualsOperatorExpression equalsOperatorExpression = (EqualsOperatorExpression) expression;
+//									if (equalsOperatorExpression.getFirstOperand() instanceof PropertyCallExpression) {
+//										PropertyCallExpression propertyCallExpression = (PropertyCallExpression) equalsOperatorExpression.getFirstOperand();
+//										if (propertyCallExpression.getTargetExpression() instanceof NameExpression) {
+//											ArrayList<Object> results = new ArrayList<Object>();
+//											results.add(list.getType() + "." + propertyCallExpression.getPropertyNameExpression().getName() + "=" + 
+//													context.getExecutorFactory().executeAST(equalsOperatorExpression.getSecondOperand(), context));
+//											return results;
+//										}
+//									}
+//								}
+//								return new SelectOperation().execute(target, iterator, expression, context);
+//							}
+//						};
+//					}
+//					return null;
+//				}
+//			};
+//		}
+//		return null;
+//	
+//	}
 	
 	
 	public static void main(String[] args) throws URISyntaxException, Exception {
 		for(int i = 0; i < 1; i++)
 		{
 			EolModule eolModule = new EolModule();
-			eolModule.parse(new File("test/grabats_looped.eol"));
+			eolModule.parse(new File("test/grabats.eol"));
 			
 			EmfIndexedSmartModel smartModel = new EmfIndexedSmartModel();
 			smartModel.setName("m");
@@ -228,12 +229,14 @@ public class EmfIndexedSmartModel extends EmfSmartModel implements IAbstractOper
 			LoadingOptimisationAnalyser loa = new LoadingOptimisationAnalyser();
 			loa.run(dom);
 			
+			loa.getTypeResolutionContext().print();
+			
 			LoadingOptimisationAnalysisContext loaContext = (LoadingOptimisationAnalysisContext) loa.getTypeResolutionContext();
 			
 			smartModel.setEffectiveMetamodels(loaContext.getEffectiveMetamodels());
 			smartModel.preProcess();
 			smartModel.setSmartLoading(true);
-			smartModel.setPartialLoading(true);
+			smartModel.setPartialLoading(false);
 			long init = System.nanoTime();
 
 			smartModel.load();

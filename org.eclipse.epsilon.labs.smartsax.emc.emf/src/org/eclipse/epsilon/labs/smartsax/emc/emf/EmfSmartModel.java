@@ -81,7 +81,7 @@ public class EmfSmartModel extends EmfModel{
 		effectiveMetamodelReconciler.addPackages(packages);
 		effectiveMetamodelReconciler.addEffectiveMetamodels(effectiveMetamodels);
 		effectiveMetamodelReconciler.reconcile();
-		
+		System.out.println("reconciliation completed");
 	}
 	
 	
@@ -258,7 +258,7 @@ public class EmfSmartModel extends EmfModel{
 		for(int i = 0; i < 1; i++)
 		{
 			EolModule eolModule = new EolModule();
-			eolModule.parse(new File("test/set0_10percent.eol"));
+			eolModule.parse(new File("test/grabats.eol"));
 			
 			EmfSmartModel smartModel = new EmfSmartModel();
 			smartModel.setName("m");
@@ -280,6 +280,7 @@ public class EmfSmartModel extends EmfModel{
 			
 			LoadingOptimisationAnalyser loa = new LoadingOptimisationAnalyser();
 			loa.run(dom);
+			loa.getTypeResolutionContext().print();
 			
 			LoadingOptimisationAnalysisContext loaContext = (LoadingOptimisationAnalysisContext) loa.getTypeResolutionContext();
 			

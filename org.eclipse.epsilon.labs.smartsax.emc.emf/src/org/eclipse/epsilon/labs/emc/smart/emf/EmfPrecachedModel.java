@@ -39,7 +39,6 @@ public class EmfPrecachedModel extends EmfModel{
 	protected ArrayList<EffectiveMetamodel> effectiveMetamodels = new ArrayList<EffectiveMetamodel>();	//protected ModelContainer modelContainer;
 
 	protected ArrayList<EClass> eClassesToVisit = new ArrayList<EClass>();
-	//protected HashMap<String, HashMap<String, ArrayList<String>>> traversalPlan = new HashMap<String, HashMap<String,ArrayList<String>>>();
 	ArrayList<EClass> allOfKinds = new ArrayList<EClass>();
 	ArrayList<EClass> allOfTypes = new ArrayList<EClass>();
 
@@ -298,7 +297,7 @@ public class EmfPrecachedModel extends EmfModel{
 		for(int i = 0; i < 1; i++)
 		{
 			EolModule eolModule = new EolModule();
-			eolModule.parse(new File("test/set0_10percent.eol"));
+			eolModule.parse(new File("test/grabats.eol"));
 			
 			EmfPrecachedModel smartModel = new EmfPrecachedModel();
 			smartModel.setName("m");

@@ -1,2 +1,2 @@
-Normal loading time,Normal execution time,Normal memory consumption,Partial loading time,Partial execution time,Partial memory consumption
-40000,9695,2483120170,11812,1685,575970071,
+Normal loading time,Normal execution time,Normal memory consumption,Partial loading time,Partial execution time,Partial memory consumption,greedy loading time,greedy execution time,greedy memory consumption,v2 loading time,v2 execution time,v2 memory consumption
+36133,7586,2580095336,37278,17,2482894888,43745,24,2684946944,39477,18,2296924240,

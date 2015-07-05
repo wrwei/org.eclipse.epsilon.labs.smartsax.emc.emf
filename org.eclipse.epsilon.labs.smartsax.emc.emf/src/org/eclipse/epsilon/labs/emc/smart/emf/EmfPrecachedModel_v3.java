@@ -73,6 +73,7 @@ public class EmfPrecachedModel_v3 extends EmfModel{
 			
 			loadEPackageFromFile("test/JDTAST.ecore");
 			
+			
 			Ast2EolContext ast2EolContext = new Ast2EolContext();
 			EolElement dom = ast2EolContext.getEolElementCreatorFactory().createDomElement(eolModule.getAst(), null, ast2EolContext);
 			
@@ -91,6 +92,9 @@ public class EmfPrecachedModel_v3 extends EmfModel{
 			
 			smartModel.setEffectiveMetamodels(loaContext.getEffectiveMetamodels());
 			smartModel.setSmartLoading(true);
+			
+			smartModel.preProcess();
+
 			long init = System.nanoTime();
 
 			smartModel.load();
@@ -105,7 +109,20 @@ public class EmfPrecachedModel_v3 extends EmfModel{
 		}
 	}
 
-	
+	public void preProcess() throws EolModelLoadingException
+	{
+		ResourceSet resourceSet = createResourceSet();
+		
+        // Check if global package registry contains the EcorePackage
+		if (EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) == null) {
+			EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		}
+		
+		determinePackagesFrom(resourceSet);
+		reconcile();
+
+	}
+
 	
 	public void reconcile()
 	{
@@ -190,7 +207,29 @@ public class EmfPrecachedModel_v3 extends EmfModel{
 
 	public void populateCaches() throws Exception
 	{
-		reconcile();
+		for(EffectiveMetamodel mc: effectiveMetamodels)
+		{
+			for(EffectiveType mec: mc.getAllOfKind())
+			{
+				EClass eClass = classForName(mec.getName());
+				if (eClass != null) {
+					allOfKinds.add(eClass);
+					cachedKinds.add(eClass);	
+				}
+				else {
+					System.out.println("eclass is null!");
+				}
+			}
+			
+			for(EffectiveType mec: mc.getAllOfType())
+			{
+				EClass eClass = classForName(mec.getName());
+				allOfTypes.add(eClass);
+				cachedTypes.add(eClass);
+			}
+		}
+
+		//reconcile();
 		for(Resource resource : getResources())
 		{
 			for(EObject eObject: resource.getContents())
@@ -217,6 +256,11 @@ public class EmfPrecachedModel_v3 extends EmfModel{
 		if (traversalPlanContains(eObject.eClass())) {
 			processEObject(eObject);
 			
+//			for(EObject obj: eObject.eContents())
+//			{
+//				visitEObject(obj);
+//			}
+
 			
 			ArrayList<EReference> refs = getReferencesToVisit(eObject.eClass());
 			if (refs != null) {
@@ -352,10 +396,6 @@ public class EmfPrecachedModel_v3 extends EmfModel{
 					EClass actual = (EClass) ePackage.getEClassifier(className);
 					//if the current class under question is a sub class of the mec, should return true
 					
-						allOfKinds.add(kind);	
-						cachedKinds.add(kind);	
-
-					
 					if(actual.getEAllSuperTypes().contains(kind))
 					{
 						return true;
@@ -380,9 +420,6 @@ public class EmfPrecachedModel_v3 extends EmfModel{
 					EClass type = (EClass) ePackage.getEClassifier(elementName);
 					//get the eclass for the class under question
 					EClass actual = (EClass) ePackage.getEClassifier(className);
-					
-						allOfTypes.add(type);	
-						cachedTypes.add(type);	
 					
 
 					//if the class under question is a super class of the mec, should return true

@@ -19,130 +19,25 @@ import org.eclipse.epsilon.eol.analysis.optimisation.loading.context.LoadingOpti
 import org.eclipse.epsilon.eol.analysis.optimisation.loading.impl.LoadingOptimisationAnalyser;
 import org.eclipse.epsilon.eol.ast2eol.Ast2EolContext;
 import org.eclipse.epsilon.eol.metamodel.EolElement;
-import org.eclipse.epsilon.eol.parse.Eol_EolParserRules.elseStatement_return;
 import org.eclipse.epsilon.eol.visitor.resolution.type.tier1.impl.TypeResolver;
 import org.eclipse.epsilon.eol.visitor.resolution.variable.impl.VariableResolver;
+import org.eclipse.epsilon.labs.emc.smart.emf.EmfPrecachedModel_v3;
+import org.eclipse.epsilon.labs.emc.smart.emf.EmfPrecachedModel_v4;
 import org.eclipse.epsilon.labs.smartsax.emc.emf.EmfGreedyModel;
-import org.eclipse.epsilon.labs.smartsax.emc.emf.EmfSmartModel;
 
 public class Test_Harness {
 	
 	public static void main(String[] args) throws Exception {
 		Test_Harness test_Harness = new Test_Harness();
-//		test_Harness.runSet0();
-//		test_Harness.runSet1();
-//		test_Harness.runSet2();
-//		test_Harness.runSet3();
-//		test_Harness.runSet4();
+		test_Harness.runSet0();
+		test_Harness.runSet1();
+		test_Harness.runSet2();
+		test_Harness.runSet3();
+		test_Harness.runSet4();
 		
-//		test_Harness.runSet0CU();
-//		test_Harness.runSet1CU();
-//		test_Harness.runSet2CU();
-//		test_Harness.runSet3CU();
-//		test_Harness.runSet4CU();
-		
-		test_Harness.runSet0grabats();
-//		test_Harness.runSet1grabats();
-//		test_Harness.runSet2grabats();
-//		test_Harness.runSet3grabats();
-//		test_Harness.runSet4grabats();
 		
 	}
 	
-	public void runSet0grabats() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		result.add(test_v3("test/JDTAST.ecore", "test/set0.xmi", "test/grabats.eol", "m"));	
-		generateCSV_v2(result, "set0grab", 1);
-	}
-	
-	public void runSet1grabats() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		result.add(test_v3("test/JDTAST.ecore", "test/set1.xmi", "test/grabats.eol", "m"));	
-		generateCSV_v2(result, "set1grab", 1);
-	}
-	
-	public void runSet2grabats() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		result.add(test_v3("test/JDTAST.ecore", "test/set2.xmi", "test/grabats.eol", "m"));	
-		generateCSV_v2(result, "set2grab", 1);
-	}
-	
-	public void runSet3grabats() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		result.add(test_v3("test/JDTAST.ecore", "test/set3.xmi", "test/grabats.eol", "m"));	
-		generateCSV_v2(result, "set3grab", 1);
-	}
-	
-	public void runSet4grabats() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		result.add(test_v3("test/JDTAST.ecore", "test/set4.xmi", "test/grabats.eol", "m"));	
-		generateCSV_v2(result, "set4grab", 1);
-	}
-
-	
-	public void runSet(int setNumber, int percentage) throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		result.add(test_v2("test/JDTAST.ecore", "test/set"+ setNumber + ".xmi", "test/set"+ setNumber + "_" + percentage + "percent.eol", "m"));	
-	}
-
-	
-	
-	public void runSet0CU() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		for(int i = 1; i <= 5; i++)
-		{
-			result.add(test_v3("test/JDTAST.ecore", "test/set0.xmi", "test/set0_" + i*2 + "0percent_cu.eol", "m"));	
-		}
-		generateCSV_v2(result, "set0", 5);
-	}
-
-	public void runSet1CU() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		for(int i = 1; i <= 5; i++)
-		{
-			result.add(test_v3("test/JDTAST.ecore", "test/set1.xmi", "test/set0_" + i*2 + "0percent_cu.eol", "m"));	
-		}
-		generateCSV_v2(result, "set1", 5);
-	}
-	
-	public void runSet2CU() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		for(int i = 1; i <= 5; i++)
-		{
-			result.add(test_v3("test/JDTAST.ecore", "test/set2.xmi", "test/set2_" + i*2 + "0percent_cu.eol", "m"));	
-		}
-		generateCSV_v2(result, "set2", 5);
-	}
-	
-	public void runSet3CU() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		for(int i = 1; i <= 5; i++)
-		{
-			result.add(test_v3("test/JDTAST.ecore", "test/set3.xmi", "test/set3_" + i*2 + "0percent_cu.eol", "m"));	
-		}
-		generateCSV_v2(result, "set3", 5);
-	}
-
-	public void runSet4CU() throws Exception
-	{
-		ArrayList<ArrayList<Long>> result = new ArrayList<ArrayList<Long>>();
-		for(int i = 1; i <= 5; i++)
-		{
-			result.add(test_v3("test/JDTAST.ecore", "test/set4.xmi", "test/set4_" + i*2 + "0percent_cu.eol", "m"));	
-		}
-		generateCSV_v2(result, "set4", 5);
-	}
-
 	
 	public void runSet0() throws Exception
 	{
@@ -227,7 +122,18 @@ public class Test_Harness {
 		    writer.append("Partial execution time");
 		    writer.append(',');
 		    writer.append("Partial memory consumption");
-//		    writer.append(',');
+		    writer.append(',');
+		    writer.append("Greedy loading time");
+		    writer.append(',');
+		    writer.append("Greedy execution time");
+		    writer.append(',');
+		    writer.append("Greedy memory consumption");
+		    writer.append(',');
+		    writer.append("v2 loading time");
+		    writer.append(',');
+		    writer.append("v2 execution time");
+		    writer.append(',');
+		    writer.append("v2 memory consumption");
 //		    writer.append("Normal Total");
 //		    writer.append(',');
 //		    writer.append("Smart Total");
@@ -244,7 +150,7 @@ public class Test_Harness {
 		    for(int i = 0; i < entries; i++)
 		    {
 		    	ArrayList<Long> temp = input.get(i);
-		    	for(int j = 0; j < 5; j++)
+		    	for(int j = 0; j < 11; j++)
 		    	{
 		    		writer.append(temp.get(j)+"");
 		    		writer.append(',');
@@ -340,7 +246,7 @@ public class Test_Harness {
 		} 
 	}
 	
-	public ArrayList<Long> test_v2(String metamodel, String model, String eolFile, String modelName) throws Exception
+	public ArrayList<Long> test_v3(String metamodel, String model, String eolFile, String modelName) throws Exception
 	{
 		ArrayList<Long> result = new ArrayList<Long>();
 		
@@ -348,30 +254,22 @@ public class Test_Harness {
 		ArrayList<Long> normalLoad = new ArrayList<Long>();
 		ArrayList<Long> normalExecute = new ArrayList<Long>();
 		ArrayList<Long> normalMemory = new ArrayList<Long>();
-
 		
 		ArrayList<Long> smartLoad = new ArrayList<Long>();
 		ArrayList<Long> smartExecute = new ArrayList<Long>();
 		ArrayList<Long> smartMemory = new ArrayList<Long>();
-
 		
-		ArrayList<Long> partialLoad = new ArrayList<Long>();
-		ArrayList<Long> partialExecute = new ArrayList<Long>();
-		ArrayList<Long> partialMemory = new ArrayList<Long>();
-
-
-		ArrayList<Long> smartPartialLoad = new ArrayList<Long>();
-		ArrayList<Long> smartPartialExecute = new ArrayList<Long>();
-		ArrayList<Long> smartPartialMemory = new ArrayList<Long>();
-
-
 		ArrayList<Long> greedyLoad = new ArrayList<Long>();
 		ArrayList<Long> greedyExecute = new ArrayList<Long>();
 		ArrayList<Long> greedyMemory = new ArrayList<Long>();
-
+		
+		ArrayList<Long> v2Load = new ArrayList<Long>();
+		ArrayList<Long> v2Execute = new ArrayList<Long>();
+		ArrayList<Long> v2Memory = new ArrayList<Long>();
+		
 
 		//specify the iteration and disregard
-		final int iteration = 2;
+		final int iteration = 3;
 		final int disregard = 1;
 		
 		//run normal
@@ -383,34 +281,17 @@ public class Test_Harness {
 			normalMemory.add(tempResult.get(2));
 			System.gc();
 		}
-		//run smart
+		//run partial
 		for(int i = 0; i < iteration; i++)
-		{		
+		{
 			ArrayList<Long> tempResult = testModel(metamodel, model, eolFile, 1, modelName, true, false);
 			smartLoad.add(tempResult.get(0));
 			smartExecute.add(tempResult.get(1));
 			smartMemory.add(tempResult.get(2));
 			System.gc();
-		}
-		//run partial
-		for(int i = 0; i < iteration; i++)
-		{
-			ArrayList<Long> tempResult = testModel(metamodel, model, eolFile, 1, modelName, false, true);
-			partialLoad.add(tempResult.get(0));
-			partialExecute.add(tempResult.get(1));
-			partialMemory.add(tempResult.get(2));
-			System.gc();
 		}		
-		//run smart partial
-		for(int i = 0; i < iteration; i++)
-		{
-			ArrayList<Long> tempResult = testModel(metamodel, model, eolFile, 1, modelName, true, true);
-			smartPartialLoad.add(tempResult.get(0));
-			smartPartialExecute.add(tempResult.get(1));
-			smartPartialMemory.add(tempResult.get(2));
-			System.gc();
-		}	
-		//run greedy
+		
+		//run partial
 		for(int i = 0; i < iteration; i++)
 		{
 			ArrayList<Long> tempResult = testModel(metamodel, model, eolFile, 2, modelName, false, false);
@@ -418,7 +299,17 @@ public class Test_Harness {
 			greedyExecute.add(tempResult.get(1));
 			greedyMemory.add(tempResult.get(2));
 			System.gc();
-		}
+		}	
+		
+		//run partial
+		for(int i = 0; i < iteration; i++)
+		{
+			ArrayList<Long> tempResult = testModel(metamodel, model, eolFile, 3, modelName, true, false);
+			v2Load.add(tempResult.get(0));
+			v2Execute.add(tempResult.get(1));
+			v2Memory.add(tempResult.get(2));
+			System.gc();
+		}	
 		
 		long normalLoadTime = 0;
 		long normalExecutionTime = 0;
@@ -427,19 +318,16 @@ public class Test_Harness {
 		long smartLoadTime = 0;
 		long smartExecutionTime = 0;
 		long smartMemoryConsumption = 0;
-
-		long partialLoadTime = 0;
-		long partialExecutionTime = 0;
-		long partialMemoryConsumption = 0;
-
-		long smartPartialLoadTime = 0;
-		long smartPartialExecutionTime = 0;
-		long smartPartialMemoryConsumption = 0;
 		
 		long greedyLoadTime = 0;
 		long greedyExecutionTime = 0;
 		long greedyMemoryConsumption = 0;
+		
+		long v2LoadTime = 0;
+		long v2ExecutionTime = 0;
+		long v2MemoryConsumption = 0;
 
+		
 		Collections.sort(normalLoad);
 		Collections.sort(normalExecute);
 		Collections.sort(normalMemory);
@@ -448,17 +336,13 @@ public class Test_Harness {
 		Collections.sort(smartExecute);
 		Collections.sort(smartMemory);
 		
-		Collections.sort(partialLoad);
-		Collections.sort(partialExecute);
-		Collections.sort(partialMemory);
-		
-		Collections.sort(smartPartialLoad);
-		Collections.sort(smartPartialExecute);
-		Collections.sort(smartPartialMemory);
-		
 		Collections.sort(greedyLoad);
 		Collections.sort(greedyExecute);
 		Collections.sort(greedyMemory);
+		
+		Collections.sort(v2Load);
+		Collections.sort(v2Execute);
+		Collections.sort(v2Memory);
 		
 		int pivot;
 		if ((iteration - disregard)/2 == 0) {
@@ -484,18 +368,14 @@ public class Test_Harness {
 						smartExecutionTime = (smartExecutionTime + smartExecute.get(i))/2;
 						smartMemoryConsumption = (smartMemoryConsumption + smartMemory.get(i))/2;
 						
-						partialLoadTime = (partialLoadTime + partialLoad.get(i))/2;
-						partialExecutionTime = (partialExecutionTime + partialExecute.get(i))/2;
-						partialMemoryConsumption = (partialMemoryConsumption + partialMemory.get(i))/2;
-						
-						smartPartialLoadTime = (smartPartialLoadTime + smartPartialLoad.get(i))/2;
-						smartPartialExecutionTime = (smartPartialExecutionTime + smartPartialExecute.get(i))/2;
-						smartPartialMemoryConsumption = (smartPartialMemoryConsumption + smartPartialMemory.get(i))/2;
-						
 						greedyLoadTime = (greedyLoadTime + greedyLoad.get(i))/2;
 						greedyExecutionTime = (greedyExecutionTime + greedyExecute.get(i))/2;
 						greedyMemoryConsumption = (greedyMemoryConsumption + greedyMemory.get(i))/2;
-
+						
+						v2LoadTime = (v2LoadTime + v2Load.get(i))/2;
+						v2ExecutionTime = (v2ExecutionTime + v2Execute.get(i))/2;
+						v2MemoryConsumption = (v2MemoryConsumption + v2Memory.get(i))/2;
+						
 					}
 					else {
 						normalLoadTime = normalLoad.get(i);
@@ -506,17 +386,13 @@ public class Test_Harness {
 						smartExecutionTime = smartExecute.get(i);
 						smartMemoryConsumption = smartMemory.get(i);
 						
-						partialLoadTime = partialLoad.get(i);
-						partialExecutionTime = partialExecute.get(i);
-						partialMemoryConsumption = partialMemory.get(i);
-						
-						smartPartialLoadTime = smartPartialLoad.get(i);
-						smartPartialExecutionTime = smartPartialExecute.get(i);
-						smartPartialMemoryConsumption = smartPartialMemory.get(i);
-						
 						greedyLoadTime = greedyLoad.get(i);
 						greedyExecutionTime = greedyExecute.get(i);
 						greedyMemoryConsumption = greedyMemory.get(i);
+
+						v2LoadTime = v2Load.get(i);
+						v2ExecutionTime = v2Execute.get(i);
+						v2MemoryConsumption = v2Memory.get(i);
 					}
 				}
 			}
@@ -531,37 +407,29 @@ public class Test_Harness {
 		result.add(smartExecutionTime);
 		result.add(smartMemoryConsumption);
 		
-		result.add(partialLoadTime);
-		result.add(partialExecutionTime);
-		result.add(partialMemoryConsumption);
-		
-		result.add(smartPartialLoadTime);
-		result.add(smartPartialExecutionTime);
-		result.add(smartPartialMemoryConsumption);
-		
 		result.add(greedyLoadTime);
 		result.add(greedyExecutionTime);
 		result.add(greedyMemoryConsumption);
+		
+		result.add(v2LoadTime);
+		result.add(v2ExecutionTime);
+		result.add(v2MemoryConsumption);
 		
 		System.out.println("normal loading time average: " + normalLoadTime);
 		System.out.println("normal execution time average: " + normalExecutionTime);
 		System.out.println("normal memory consumption: " + normalMemoryConsumption);
 		
-		System.out.println("smart loading time average: " + smartLoadTime);
-		System.out.println("smart execution time average: " + smartExecutionTime);
-		System.out.println("smart memory consumption: " + smartMemoryConsumption);
+		System.out.println("partial loading time average: " + smartLoadTime);
+		System.out.println("partial execution time average: " + smartExecutionTime);
+		System.out.println("partial memory consumption: " + smartMemoryConsumption);
 		
-		System.out.println("partial loading time average: " + partialLoadTime);
-		System.out.println("partial execution time average: " + partialExecutionTime);
-		System.out.println("partial memory consumption: " + partialMemoryConsumption);
-		
-		System.out.println("smart partial loading time average: " + smartPartialLoadTime);
-		System.out.println("smart partial execution time average: " + smartPartialExecutionTime);
-		System.out.println("smart partial memory consumption: " + smartPartialMemoryConsumption);
-
 		System.out.println("greedy loading time average: " + greedyLoadTime);
 		System.out.println("greedy execution time average: " + greedyExecutionTime);
 		System.out.println("greedy memory consumption: " + greedyMemoryConsumption);
+		
+		System.out.println("v2 loading time average: " + v2LoadTime);
+		System.out.println("v2 execution time average: " + v2ExecutionTime);
+		System.out.println("v2 memory consumption: " + v2MemoryConsumption);
 		
 		try
 		{
@@ -573,29 +441,23 @@ public class Test_Harness {
 		    writer.append(',');
 		    writer.append("Normal memory consumption");
 		    writer.append(',');
-		    writer.append("Smart loading time");
-		    writer.append(',');
-		    writer.append("Smart execution time");
-		    writer.append(',');
-		    writer.append("Smart memory consumption");
-		    writer.append(',');
 		    writer.append("Partial loading time");
 		    writer.append(',');
 		    writer.append("Partial execution time");
 		    writer.append(',');
 		    writer.append("Partial memory consumption");
 		    writer.append(',');
-		    writer.append("Smart Partial loading time");
+		    writer.append("greedy loading time");
 		    writer.append(',');
-		    writer.append("Smart Partial execution time");
+		    writer.append("greedy execution time");
 		    writer.append(',');
-		    writer.append("Smart Partial memory consumption");
+		    writer.append("greedy memory consumption");
 		    writer.append(',');
-		    writer.append("Greedy loading time");
+		    writer.append("v2 loading time");
 		    writer.append(',');
-		    writer.append("Greedy execution time");
+		    writer.append("v2 execution time");
 		    writer.append(',');
-		    writer.append("Greedy memory consumption");
+		    writer.append("v2 memory consumption");
 		    writer.append('\n');
 		    
 		    writer.append(normalLoadTime+"");
@@ -612,178 +474,18 @@ public class Test_Harness {
 		    writer.append(smartMemoryConsumption+"");
 		    writer.append(',');
 		    
-		    writer.append(partialLoadTime+"");
-		    writer.append(',');
-		    writer.append(partialExecutionTime+"");
-		    writer.append(',');
-		    writer.append(partialMemoryConsumption+"");
-		    writer.append(',');
-		    
-		    writer.append(smartPartialLoadTime+"");
-		    writer.append(',');
-		    writer.append(smartPartialExecutionTime+"");
-		    writer.append(',');
-		    writer.append(smartPartialMemoryConsumption+"");
-		    writer.append(',');
-		    
 		    writer.append(greedyLoadTime+"");
 		    writer.append(',');
 		    writer.append(greedyExecutionTime+"");
 		    writer.append(',');
 		    writer.append(greedyMemoryConsumption+"");
-		    writer.append('\n');
-	 
-	 
-		    writer.flush();
-		    writer.close();
-		}
-		catch(IOException e)
-		{
-		     e.printStackTrace();
-		} 
-		
-		return result;
-	
-	}
-	
-	public ArrayList<Long> test_v3(String metamodel, String model, String eolFile, String modelName) throws Exception
-	{
-		ArrayList<Long> result = new ArrayList<Long>();
-		
-		//prepare data holders
-		ArrayList<Long> normalLoad = new ArrayList<Long>();
-		ArrayList<Long> normalExecute = new ArrayList<Long>();
-		ArrayList<Long> normalMemory = new ArrayList<Long>();
-		
-		ArrayList<Long> partialLoad = new ArrayList<Long>();
-		ArrayList<Long> partialExecute = new ArrayList<Long>();
-		ArrayList<Long> partialMemory = new ArrayList<Long>();
-
-		//specify the iteration and disregard
-		final int iteration = 2;
-		final int disregard = 1;
-		
-		//run normal
-		for(int i = 0; i < iteration; i++)
-		{
-			ArrayList<Long> tempResult = testModel(metamodel, model, eolFile, 0, modelName, false, false);
-			normalLoad.add(tempResult.get(0));
-			normalExecute.add(tempResult.get(1));
-			normalMemory.add(tempResult.get(2));
-			System.gc();
-		}
-		//run partial
-		for(int i = 0; i < iteration; i++)
-		{
-			ArrayList<Long> tempResult = testModel(metamodel, model, eolFile, 1, modelName, false, true);
-			partialLoad.add(tempResult.get(0));
-			partialExecute.add(tempResult.get(1));
-			partialMemory.add(tempResult.get(2));
-			System.gc();
-		}		
-		
-		long normalLoadTime = 0;
-		long normalExecutionTime = 0;
-		long normalMemoryConsumption = 0;
-		
-		long partialLoadTime = 0;
-		long partialExecutionTime = 0;
-		long partialMemoryConsumption = 0;
-
-		Collections.sort(normalLoad);
-		Collections.sort(normalExecute);
-		Collections.sort(normalMemory);
-		
-		Collections.sort(partialLoad);
-		Collections.sort(partialExecute);
-		Collections.sort(partialMemory);
-		
-		int pivot;
-		if ((iteration - disregard)/2 == 0) {
-			pivot = 1;
-		}
-		else {
-			pivot = (iteration-disregard)/2;
-		}
-		
-		for(int i = 0; i < iteration; i++)
-		{
-			if (i < pivot) {
-				
-			}
-			else {
-				if (i < pivot+disregard) {
-					if (i > pivot) {
-						normalLoadTime = (normalLoadTime + normalLoad.get(i))/2;
-						normalExecutionTime = (normalExecutionTime + normalExecute.get(i))/2;
-						normalMemoryConsumption = (normalMemoryConsumption + normalMemory.get(i))/2;
-						
-						partialLoadTime = (partialLoadTime + partialLoad.get(i))/2;
-						partialExecutionTime = (partialExecutionTime + partialExecute.get(i))/2;
-						partialMemoryConsumption = (partialMemoryConsumption + partialMemory.get(i))/2;
-						
-					}
-					else {
-						normalLoadTime = normalLoad.get(i);
-						normalExecutionTime = normalExecute.get(i);
-						normalMemoryConsumption = normalMemory.get(i);
-
-						partialLoadTime = partialLoad.get(i);
-						partialExecutionTime = partialExecute.get(i);
-						partialMemoryConsumption = partialMemory.get(i);
-						
-					}
-				}
-			}
-		}
-		
-				
-		result.add(normalLoadTime);
-		result.add(normalExecutionTime);
-		result.add(normalMemoryConsumption);
-		
-		result.add(partialLoadTime);
-		result.add(partialExecutionTime);
-		result.add(partialMemoryConsumption);
-		
-		System.out.println("normal loading time average: " + normalLoadTime);
-		System.out.println("normal execution time average: " + normalExecutionTime);
-		System.out.println("normal memory consumption: " + normalMemoryConsumption);
-		
-		System.out.println("partial loading time average: " + partialLoadTime);
-		System.out.println("partial execution time average: " + partialExecutionTime);
-		System.out.println("partial memory consumption: " + partialMemoryConsumption);
-		
-		
-		try
-		{
-			FileWriter writer = new FileWriter(eolFile.substring(0, eolFile.length()-4) + ".csv");
-	 
-		    writer.append("Normal loading time");
-		    writer.append(',');
-		    writer.append("Normal execution time");
-		    writer.append(',');
-		    writer.append("Normal memory consumption");
-		    writer.append(',');
-		    writer.append("Partial loading time");
-		    writer.append(',');
-		    writer.append("Partial execution time");
-		    writer.append(',');
-		    writer.append("Partial memory consumption");
-		    writer.append('\n');
-		    
-		    writer.append(normalLoadTime+"");
-		    writer.append(',');
-		    writer.append(normalExecutionTime+"");
-		    writer.append(',');
-		    writer.append(normalMemoryConsumption+"");
 		    writer.append(',');
 		    
-		    writer.append(partialLoadTime+"");
+		    writer.append(v2LoadTime+"");
 		    writer.append(',');
-		    writer.append(partialExecutionTime+"");
+		    writer.append(v2ExecutionTime+"");
 		    writer.append(',');
-		    writer.append(partialMemoryConsumption+"");
+		    writer.append(v2MemoryConsumption+"");
 		    writer.append(',');
 		    
 		    writer.flush();
@@ -798,268 +500,6 @@ public class Test_Harness {
 	
 	}
 
-	
-	public void test(String metamodel, String model, String eolFile, String modelName) throws Exception
-	{
-		//prepare data holders
-		ArrayList<ArrayList<Long>> normalData = new ArrayList<ArrayList<Long>>();
-		ArrayList<ArrayList<Long>> smartData = new ArrayList<ArrayList<Long>>();
-		ArrayList<ArrayList<Long>> partialData = new ArrayList<ArrayList<Long>>();
-		ArrayList<ArrayList<Long>> smartPartialData = new ArrayList<ArrayList<Long>>();
-		ArrayList<ArrayList<Long>> greedyData = new ArrayList<ArrayList<Long>>();
-		
-		//specify the iteration and disregard
-		final int iteration = 1;
-		final int disregard = 0;
-		
-		//run normal
-		for(int i = 0; i < iteration; i++)
-		{
-			normalData.add(testModel(metamodel, model, eolFile, 0, modelName, false, false));
-		}
-
-		//run smart
-		for(int i = 0; i < iteration; i++)
-		{
-			smartData.add(testModel(metamodel, model, eolFile, 1, modelName, true, false));
-		}
-		
-		//run partial
-		for(int i = 0; i < iteration; i++)
-		{
-			partialData.add(testModel(metamodel, model, eolFile, 1, modelName, false, true));
-		}		
-		
-		//run smart partial
-		for(int i = 0; i < iteration; i++)
-		{
-			smartPartialData.add(testModel(metamodel, model, eolFile, 1, modelName, true, true));
-		}	
-		
-		//run greedy
-		for(int i = 0; i < iteration; i++)
-		{
-			greedyData.add(testModel(metamodel, model, eolFile, 2, modelName, false, false));
-		}
-		
-		
-		//gc
-		System.gc();
-		
-		//set counter
-		int counter = 0;
-		
-		//normal results
-		String normalResult = "";
-		long normalLoadTime = 0;
-		long normalExecutionTime = 0;
-		long normalMemoryConsumption = 0;
-		
-		for(ArrayList<Long> result : normalData)
-		{
-			if (counter < disregard) {
-				//if still in disregard range, ignore
-			}
-			else {
-				normalLoadTime += result.get(0);
-				normalExecutionTime += result.get(1);
-				normalMemoryConsumption += result.get(2);
-				normalResult += "|"+result.get(0) + ", " + result.get(1) + ", " + result.get(2);	
-			}
-			counter ++;
-		}
-		counter = 0;
-
-		String smartResult = "";
-		long smartLoadTime = 0;
-		long smartExecutionTime = 0;
-		long smartMemoryConsumption = 0;
-		
-		for(ArrayList<Long> result : smartData)
-		{
-			if (counter < disregard) {
-				
-			}
-			else {
-				smartLoadTime += result.get(0);
-				smartExecutionTime += result.get(1);
-				smartMemoryConsumption += result.get(2);
-				smartResult += "|" + result.get(0) + ", " + result.get(1) + ", " + result.get(2);	
-			}
-			counter ++;
-		}
-		
-		counter = 0;
-		
-		String partialResult = "";
-		long partialLoadTime = 0;
-		long partialExecutionTime = 0;
-		long partialMemoryConsumption = 0;
-		
-		for(ArrayList<Long> result : partialData)
-		{
-			if (counter < disregard) {
-				
-			}
-			else {
-				partialLoadTime += result.get(0);
-				partialExecutionTime += result.get(1);
-				partialMemoryConsumption += result.get(2);
-				partialResult += "|" + result.get(0) + ", " + result.get(1) + ", " + result.get(2);	
-			}
-			counter ++;
-		}
-		
-		counter = 0;
-		
-		String smartPartialResult = "";
-		long smartPartialLoadTime = 0;
-		long smartPartialExecutionTime = 0;
-		long smartPartialMemoryConsumption = 0;
-		
-		for(ArrayList<Long> result : smartPartialData)
-		{
-			if (counter < disregard) {
-				
-			}
-			else {
-				smartPartialLoadTime += result.get(0);
-				smartPartialExecutionTime += result.get(1);
-				smartPartialMemoryConsumption += result.get(2);
-				smartPartialResult += "|" + result.get(0) + ", " + result.get(1) + ", " + result.get(2);	
-			}
-			counter ++;
-		}
-		
-		counter = 0;
-		
-		String greedyResult = "";
-		long greedyLoadTime = 0;
-		long greedyExecutionTime = 0;
-		long greedyMemoryConsumption = 0;
-		for(ArrayList<Long> result : greedyData)
-		{
-			if (counter < disregard) {
-				
-			}
-			else {
-				greedyLoadTime += result.get(0);
-				greedyExecutionTime += result.get(1);
-				greedyMemoryConsumption += result.get(2);
-				
-				greedyResult += "|" + result.get(0) + ", " + result.get(1) + ", " + result.get(2);	
-			}
-			counter ++;
-			
-		}
-				
-		System.out.println("Normal: " + normalResult);
-		System.out.println("Smart: " + smartResult);
-		System.out.println("Partial: " + partialResult);
-		System.out.println("Smart partial:" + smartPartialResult);
-		System.out.println("Greedy: " + greedyResult);
-		
-		
-		System.out.println("normal loading time average: " + normalLoadTime/(iteration-disregard));
-		System.out.println("normal execution time average: " + normalExecutionTime/(iteration-disregard));
-		System.out.println("normal memory consumption: " + normalMemoryConsumption/(iteration-disregard));
-		
-		System.out.println("smart loading time average: " + smartLoadTime/(iteration-disregard));
-		System.out.println("smart execution time average: " + smartExecutionTime/(iteration-disregard));
-		System.out.println("smart memory consumption: " + smartMemoryConsumption/(iteration-disregard));
-		
-		System.out.println("partial loading time average: " + partialLoadTime/(iteration-disregard));
-		System.out.println("partial execution time average: " + partialExecutionTime/(iteration-disregard));
-		System.out.println("partial memory consumption: " + partialMemoryConsumption/(iteration-disregard));
-		
-		System.out.println("smart partial loading time average: " + smartPartialLoadTime/(iteration-disregard));
-		System.out.println("smart partial execution time average: " + smartPartialExecutionTime/(iteration-disregard));
-		System.out.println("smart partial memory consumption: " + smartPartialMemoryConsumption/(iteration-disregard));
-
-		System.out.println("greedy loading time average: " + greedyLoadTime/(iteration-disregard));
-		System.out.println("greedy execution time average: " + greedyExecutionTime/(iteration-disregard));
-		System.out.println("greedy memory consumption: " + greedyMemoryConsumption/(iteration-disregard));
-		
-		try
-		{
-			FileWriter writer = new FileWriter(eolFile.substring(0, eolFile.length()-4) + ".csv");
-	 
-		    writer.append("Normal loading time");
-		    writer.append(',');
-		    writer.append("Normal execution time");
-		    writer.append(',');
-		    writer.append("Normal memory consumption");
-		    writer.append(',');
-		    writer.append("Smart loading time");
-		    writer.append(',');
-		    writer.append("Smart execution time");
-		    writer.append(',');
-		    writer.append("Smart memory consumption");
-		    writer.append(',');
-		    writer.append("Partial loading time");
-		    writer.append(',');
-		    writer.append("Partial execution time");
-		    writer.append(',');
-		    writer.append("Partial memory consumption");
-		    writer.append(',');
-		    writer.append("Smart Partial loading time");
-		    writer.append(',');
-		    writer.append("Smart Partial execution time");
-		    writer.append(',');
-		    writer.append("Smart Partial memory consumption");
-		    writer.append(',');
-		    writer.append("Greedy loading time");
-		    writer.append(',');
-		    writer.append("Greedy execution time");
-		    writer.append(',');
-		    writer.append("Greedy memory consumption");
-		    writer.append('\n');
-		    
-		    writer.append(normalLoadTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(normalExecutionTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(normalMemoryConsumption/(iteration-disregard)+"");
-		    writer.append(',');
-		    
-		    writer.append(smartLoadTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(smartExecutionTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(smartMemoryConsumption/(iteration-disregard)+"");
-		    writer.append(',');
-		    
-		    writer.append(partialLoadTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(partialExecutionTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(partialMemoryConsumption/(iteration-disregard)+"");
-		    writer.append(',');
-		    
-		    writer.append(smartPartialLoadTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(smartPartialExecutionTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(smartPartialMemoryConsumption/(iteration-disregard)+"");
-		    writer.append(',');
-		    
-		    writer.append(greedyLoadTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(greedyExecutionTime/(iteration-disregard)+"");
-		    writer.append(',');
-		    writer.append(greedyMemoryConsumption/(iteration-disregard)+"");
-		    writer.append('\n');
-	 
-	 
-		    writer.flush();
-		    writer.close();
-		}
-		catch(IOException e)
-		{
-		     e.printStackTrace();
-		} 
-	
-	}
 	
 	public ArrayList<Long> testModel(String metamodel, 
 			String model, 
@@ -1096,7 +536,7 @@ public class Test_Harness {
 			modelType = "Normal";
 		}
 		if (type == 1) {
-			emfModel = new EmfSmartModel();
+			emfModel = new EmfPrecachedModel_v3();
 			if (smartLoading && !partialLoading) {
 				modelType = "Smart";	
 			}
@@ -1122,14 +562,35 @@ public class Test_Harness {
 			loa.run(dom);
 			
 			loaContext = (LoadingOptimisationAnalysisContext) loa.getTypeResolutionContext();
-			((EmfSmartModel)emfModel).setEffectiveMetamodels(loaContext.getEffectiveMetamodels());
-			((EmfSmartModel)emfModel).setSmartLoading(smartLoading);
-			((EmfSmartModel)emfModel).setPartialLoading(partialLoading);
-			((EmfSmartModel)emfModel).setLoadAllAttributes(false);
+			((EmfPrecachedModel_v3)emfModel).setEffectiveMetamodels(loaContext.getEffectiveMetamodels());
+			((EmfPrecachedModel_v3)emfModel).setSmartLoading(smartLoading);
 		}
 		if (type == 2) {
 			emfModel = new EmfGreedyModel();
 			modelType = "Greedy";
+		}
+		
+		if (type == 3) {
+			emfModel = new EmfPrecachedModel_v4();
+			modelType = "eContents()";
+			
+			ast2EolContext = new Ast2EolContext();
+			dom = ast2EolContext.getEolElementCreatorFactory().createDomElement(eolModule.getAst(), null, ast2EolContext);
+			
+			vr = new VariableResolver();
+			vr.run(dom);
+			
+			tr = new TypeResolver();
+			tr.getTypeResolutionContext().setModule(eolModule);
+			tr.run(dom);
+			
+			loa = new LoadingOptimisationAnalyser();
+			loa.run(dom);
+			
+			loaContext = (LoadingOptimisationAnalysisContext) loa.getTypeResolutionContext();
+			((EmfPrecachedModel_v4)emfModel).setEffectiveMetamodels(loaContext.getEffectiveMetamodels());
+			((EmfPrecachedModel_v4)emfModel).setSmartLoading(smartLoading);
+
 		}
 		
 		emfModel.setName(modelName);
@@ -1137,8 +598,12 @@ public class Test_Harness {
 		emfModel.setModelFile(new File(model).getAbsolutePath());
 		
 		
-		if (type == 1 && partialLoading) {
-			((EmfSmartModel)emfModel).preProcess();
+		if (type == 1 && smartLoading) {
+			((EmfPrecachedModel_v3)emfModel).preProcess();
+		}
+		
+		if (type == 3) {
+			((EmfPrecachedModel_v4)emfModel).preProcess();
 		}
 		
 
@@ -1175,143 +640,6 @@ public class Test_Harness {
 		
 		return result;
 	}
-
-//	public static ArrayList<Long> testSmart(String set, String file) throws Exception
-//	{
-//		ArrayList<Long> result = new ArrayList<Long>();
-//		EolModule eolModule = new EolModule();
-//		eolModule.parse(new File(file));
-//		//eolModule.parse(new File("test/set2_50percent.eol"));
-//		
-//		EmfSmartModel smartModel = new EmfSmartModel();
-//		smartModel.setName("DOM");
-//		smartModel.setMetamodelFile(new File("test/JDTAST.ecore").getAbsolutePath());
-//		//smartModel.setModelFile(new File("test/set2.xmi").getAbsolutePath());
-//		smartModel.setModelFile(new File(set).getAbsolutePath());
-//		
-//		System.out.println("emf smart model prepared, loading...");
-//		
-//		loadEPackageFromFile("test/JDTAST.ecore");
-//		
-//		Ast2EolContext ast2EolContext = new Ast2EolContext();
-//		EolElement dom = ast2EolContext.getEolElementCreatorFactory().createDomElement(eolModule.getAst(), null, ast2EolContext);
-//		
-//		VariableResolver vr = new VariableResolver();
-//		vr.run(dom);
-//		
-//		TypeResolver tr = new TypeResolver();
-//		tr.getTypeResolutionContext().setModule(eolModule);
-//		tr.run(dom);
-//		
-//		LoadingOptimisationAnalyser loa = new LoadingOptimisationAnalyser();
-//		loa.run(dom);
-//		
-//		LoadingOptimisationAnalysisContext loaContext = (LoadingOptimisationAnalysisContext) loa.getTypeResolutionContext();
-//		System.out.println(loaContext.getModelContainers().get(0).getModelElementsAllOfKind().size() +loaContext.getModelContainers().get(1).getModelElementsAllOfKind().size());
-//		smartModel.setModelContainers(loaContext.getModelContainers());
-//		
-//		long memoryConsumptionStart = Runtime.getRuntime().freeMemory();
-//		
-//		long init = System.nanoTime();
-//		smartModel.load();
-//		long result1 = (System.nanoTime()-init)/1000000;
-//		result.add(result1);
-//		System.out.println("(took ~" + result1 + "ms to load)");
-//		
-//		init = System.nanoTime();
-//		eolModule.getContext().getModelRepository().addModel(smartModel);
-//		eolModule.execute();
-//		long result2 = (System.nanoTime() - init)/1000000;
-//		result.add(result2);
-//		System.out.println("(took ~" + result2 + "ms to run)");
-//		long memoryConsumptionEnd = Runtime.getRuntime().freeMemory();
-//		
-//		result.add(memoryConsumptionStart-memoryConsumptionEnd);
-//		eolModule.getContext().getModelRepository().dispose();
-//		return result;
-//	}
-//	
-//	public static ArrayList<Long> testNormal(String set, String file) throws Exception
-//	{
-//		ArrayList<Long> result = new ArrayList<Long>();
-//		EolModule eolModule = new EolModule();
-//		eolModule.parse(new File(file));
-//		//eolModule.parse(new File("test/set2_50percent.eol"));
-//		
-//		EmfModel normalModel = new EmfModel();
-//		normalModel.setName("DOM");
-//		normalModel.setMetamodelFile(new File("test/JDTAST.ecore").getAbsolutePath());
-//		normalModel.setModelFile(new File(set).getAbsolutePath());
-//		//normalModel.setModelFile(new File("test/set2.xmi").getAbsolutePath());
-//		
-//		loadEPackageFromFile("test/JDTAST.ecore");
-//		
-//		System.out.println("emf normal model prepared, loading...");
-//		
-//		long memoryConsumptionStart = Runtime.getRuntime().freeMemory();
-//
-//		long init = System.nanoTime();
-//		normalModel.load();
-//		
-//		long result1 = (System.nanoTime()-init)/1000000;
-//		result.add(result1);
-//		System.out.println("(took ~" + result1 + "ms to load)");
-//		
-//		init = System.nanoTime();
-//		eolModule.getContext().getModelRepository().addModel(normalModel);
-//		eolModule.execute();
-//		
-//		long result2 = (System.nanoTime() - init)/1000000;
-//		result.add(result2);
-//		System.out.println("(took ~" + result2 + "ms to run)");
-//		
-//		long memoryConsumptionEnd = Runtime.getRuntime().freeMemory();
-//		
-//		result.add(memoryConsumptionStart-memoryConsumptionEnd);
-//
-//		eolModule.getContext().getModelRepository().dispose();
-//		return result;
-//	}
-//	
-//	public static ArrayList<Long> testGreedy(String set, String file) throws Exception
-//	{
-//		ArrayList<Long> result = new ArrayList<Long>();
-//		EolModule eolModule = new EolModule();
-//		eolModule.parse(new File(file));
-//		//eolModule.parse(new File("test/set2_50percent.eol"));
-//		
-//		EmfGreedyModel normalModel = new EmfGreedyModel();
-//		normalModel.setName("DOM");
-//		normalModel.setMetamodelFile(new File("test/JDTAST.ecore").getAbsolutePath());
-//		normalModel.setModelFile(new File(set).getAbsolutePath());
-//		//normalModel.setModelFile(new File("test/set2.xmi").getAbsolutePath());
-//		
-//		loadEPackageFromFile("test/JDTAST.ecore");
-//		
-//		System.out.println("emf greedy model prepared, loading...");
-//		long memoryConsumptionStart = Runtime.getRuntime().freeMemory();
-//
-//		long init = System.nanoTime();
-//		normalModel.load();
-//		
-//		long result1 = (System.nanoTime()-init)/1000000;
-//		result.add(result1);
-//		System.out.println("(took ~" + result1 + "ms to load)");
-//		
-//		init = System.nanoTime();
-//		eolModule.getContext().getModelRepository().addModel(normalModel);
-//		eolModule.execute();
-//		
-//		long result2 = (System.nanoTime() - init)/1000000;
-//		result.add(result2);
-//		System.out.println("(took ~" + result2 + "ms to run)");
-//		long memoryConsumptionEnd = Runtime.getRuntime().freeMemory();
-//		
-//		result.add(memoryConsumptionStart-memoryConsumptionEnd);
-//
-//		eolModule.getContext().getModelRepository().dispose();
-//		return result;
-//	}
 
 	
 	public static EPackage loadEPackageFromFile(String fileName)

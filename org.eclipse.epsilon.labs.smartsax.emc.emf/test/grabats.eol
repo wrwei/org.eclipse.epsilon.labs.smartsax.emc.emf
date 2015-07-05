@@ -29,7 +29,7 @@ matches.addAll(TypeDeclaration.all.collect(td:TypeDeclaration|td.bodyDeclaration
 matches.size().println();
 
 
-
+/*
 var bodydecl = BodyDeclaration.all.first;
 var abstractTypeDeclaration = AbstractTypeDeclaration.all;
 var typeDecl = TypeDeclaration.all.first;
@@ -51,3 +51,4 @@ var namequali = Name.all.fullyQualifiedName;
 var modifier = Modifier.all.first;
 var modifierstatic = Modifier.all.static;
 var modifierpublic = Modifier.all.public;
+*/
