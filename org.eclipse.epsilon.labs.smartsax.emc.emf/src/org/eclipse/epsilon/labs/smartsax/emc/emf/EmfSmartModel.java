@@ -262,7 +262,7 @@ public class EmfSmartModel extends EmfModel{
 			
 			EmfSmartModel smartModel = new EmfSmartModel();
 			smartModel.setName("m");
-			smartModel.setModelFile(new File("test/set0.xmi").getAbsolutePath());
+			smartModel.setModelFile(new File("test/set4.xmi").getAbsolutePath());
 			smartModel.setMetamodelFile(new File("test/JDTAST.ecore").getAbsolutePath());
 			
 			loadEPackageFromFile("test/JDTAST.ecore");
