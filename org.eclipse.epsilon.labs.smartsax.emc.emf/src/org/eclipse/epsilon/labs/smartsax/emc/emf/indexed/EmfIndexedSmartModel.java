@@ -18,6 +18,7 @@ import org.eclipse.epsilon.eol.dom.Expression;
 import org.eclipse.epsilon.eol.dom.NameExpression;
 import org.eclipse.epsilon.eol.dom.PropertyCallExpression;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.execute.operations.AbstractOperation;
@@ -32,10 +33,12 @@ import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveMetamodel;
 import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveType;
 import org.eclipse.epsilon.labs.smartsax.emc.emf.EmfSmartModel;
 
-public class EmfIndexedSmartModel extends EmfSmartModel { 
-//implements IAbstractOperationContributorProvider{
+public class EmfIndexedSmartModel extends EmfSmartModel implements IAbstractOperationContributorProvider{
 
 	protected HashMap<EClass, HashMap<String, HashMap<Object, EObject>>> index = new HashMap<EClass, HashMap<String,HashMap<Object,EObject>>>();	
+	protected ArrayList<EClass> allOfKinds = new ArrayList<EClass>();
+	protected ArrayList<EClass> allOfTypes = new ArrayList<EClass>();
+
 	
 	protected HashMap<EClass, EffectiveType> classToTypeMap = new HashMap<EClass, EffectiveType>();
 	
@@ -101,9 +104,145 @@ public class EmfIndexedSmartModel extends EmfSmartModel {
 		}
 	}
 	
+	public void createIndex(EObject eObject, String featureName, Object value)
+	{
+		EClass eClass = eObject.eClass();
+		HashMap<String, HashMap<Object, EObject>> layer1Map = index.get(eClass);
+		if (layer1Map != null) {
+			HashMap<Object, EObject> layer2Map = layer1Map.get(featureName);
+			if (layer2Map != null) {
+				layer2Map.put(value, eObject);
+			}
+			else {
+				layer2Map = new HashMap<Object, EObject>();
+				layer2Map.put(value, eObject);
+				layer1Map.put(featureName, layer2Map);
+			}
+		}
+		else {
+			layer1Map = new HashMap<String, HashMap<Object,EObject>>();
+			HashMap<Object, EObject> layer2Map = new HashMap<Object, EObject>();
+			layer2Map.put(value, eObject);
+			layer1Map.put(featureName, layer2Map);
+			index.put(eClass, layer1Map);
+		}
+	}
+
+	public void populateCaches() throws EolModelElementTypeNotFoundException
+	{		
+		for(EffectiveMetamodel mc: effectiveMetamodels)
+		{
+			for(EffectiveType mec: mc.getAllOfKind())
+			{
+				EClass eClass = classForName(mec.getName());
+				if (eClass != null) {
+					allOfKinds.add(eClass);
+					cachedKinds.add(eClass);	
+				}
+				else {
+					System.out.println("eclass is null!");
+				}
+			}
+			
+			for(EffectiveType mec: mc.getAllOfType())
+			{
+				EClass eClass = classForName(mec.getName());
+				allOfTypes.add(eClass);
+				cachedTypes.add(eClass);
+			}
+		}
+		
+		for (EObject eObject : (Collection<EObject>)allContents()) {
+			for(EClass eClass : allOfKinds)
+			{
+				if (eClass.isInstance(eObject)) {
+					
+					kindCache.put(eClass, eObject);
+				}
+			}
+			for(EClass eClass : allOfTypes)
+			{
+				if (eObject.eClass() == eClass){
+					typeCache.put(eClass, eObject);
+				}
+			}
+			ArrayList<EStructuralFeature> featuresToIndex = featuresToIndex(eObject);
+			if (featuresToIndex != null) {
+				for(EStructuralFeature feature: featuresToIndex)
+				{
+					
+					if (eObject.eClass().getEAllStructuralFeatures().contains(feature) && eObject.eGet(feature) != null) {
+						createIndex(eObject, feature.getName(), eObject.eGet(feature));	
+					}
+				}
+			}
+		}
+	}
 	
-	@Override
-	public void populateCaches() throws Exception {
+	public ArrayList<EStructuralFeature> featuresToIndex(EObject eObject) throws EolModelElementTypeNotFoundException
+	{
+		ArrayList<EStructuralFeature> result = new ArrayList<EStructuralFeature>();
+		
+		EClass eClass = eObject.eClass();
+		
+		EffectiveMetamodel em = getEffectiveMetamodel(eClass);
+		
+		if (em == null) {
+			return null;
+		}
+		
+		for(EffectiveType et: em.getAllOfKind())
+		{
+			EClass effectiveEClass = classForName(et.getName());
+			if (effectiveEClass.isInstance(eObject)) {
+				for(EffectiveFeature ef: et.getAllFeatures())
+				{
+					if (ef.getUsage() > 1) {
+						result.add(eClass.getEStructuralFeature(ef.getName()));
+					}
+				}
+			}
+		}
+		
+		for(EffectiveType et: em.getAllOfType())
+		{
+			if (et.getName().equals(eClass.getName())) {
+				for(EffectiveFeature ef: et.getAllFeatures())
+				{
+					if (ef.getUsage() > 1) {
+						result.add(eClass.getEStructuralFeature(ef.getName()));
+					}
+				}
+			}
+		}
+		
+		for(EffectiveType et: em.getTypes())
+		{
+			EClass effectiveEClass = classForName(et.getName());
+			if (effectiveEClass.isInstance(eObject)) {
+				for(EffectiveFeature ef: et.getAllFeatures())
+				{
+					if (ef.getUsage() > 1) {
+						result.add(eClass.getEStructuralFeature(ef.getName()));
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public EffectiveMetamodel getEffectiveMetamodel(EClass eClass)
+	{
+		for(EffectiveMetamodel em: effectiveMetamodels)
+		{
+			if (em.getName().equals(eClass.getEPackage().getName())) {
+				return em;
+			}
+		}
+		return null;
+	}
+	
+	public void populateCaches_v2() throws Exception {
 
 		ArrayList<EClass> allOfKinds = new ArrayList<EClass>();
 		ArrayList<EClass> allOfTypes = new ArrayList<EClass>();
@@ -155,51 +294,51 @@ public class EmfIndexedSmartModel extends EmfSmartModel {
 		}
 	}
 
-//	@Override
-//	public IAbstractOperationContributor getAbstractOperationContributor(
-//			Object target) {
-//
-//		
-//		System.out.println("called");
-//		if (target instanceof FutureList<?>) {
-//			return new IAbstractOperationContributor() {
-//				@Override
-//				public AbstractOperation getAbstractOperation(String name) {
-//					if (name.equalsIgnoreCase("select")) {
-//						
-//						return new SelectOperation() {
-//							
-//							@Override
-//							public Object execute(Object target,
-//									Variable iterator, Expression expression,
-//									IEolContext context, boolean returnOnFirstMatch)
-//									throws EolRuntimeException {
-//								
-//								FutureList<?> list = (FutureList<?>) target;
-//								
-//								if (expression instanceof EqualsOperatorExpression) {
-//									EqualsOperatorExpression equalsOperatorExpression = (EqualsOperatorExpression) expression;
-//									if (equalsOperatorExpression.getFirstOperand() instanceof PropertyCallExpression) {
-//										PropertyCallExpression propertyCallExpression = (PropertyCallExpression) equalsOperatorExpression.getFirstOperand();
-//										if (propertyCallExpression.getTargetExpression() instanceof NameExpression) {
-//											ArrayList<Object> results = new ArrayList<Object>();
-//											results.add(list.getType() + "." + propertyCallExpression.getPropertyNameExpression().getName() + "=" + 
-//													context.getExecutorFactory().executeAST(equalsOperatorExpression.getSecondOperand(), context));
-//											return results;
-//										}
-//									}
-//								}
-//								return new SelectOperation().execute(target, iterator, expression, context);
-//							}
-//						};
-//					}
-//					return null;
-//				}
-//			};
-//		}
-//		return null;
-//	
-//	}
+	@Override
+	public IAbstractOperationContributor getAbstractOperationContributor(
+			Object target) {
+
+		
+		System.out.println("called");
+		if (target instanceof FutureList<?>) {
+			return new IAbstractOperationContributor() {
+				@Override
+				public AbstractOperation getAbstractOperation(String name) {
+					if (name.equalsIgnoreCase("select")) {
+						
+						return new SelectOperation() {
+							
+							@Override
+							public Object execute(Object target,
+									Variable iterator, Expression expression,
+									IEolContext context, boolean returnOnFirstMatch)
+									throws EolRuntimeException {
+								
+								FutureList<?> list = (FutureList<?>) target;
+								
+								if (expression instanceof EqualsOperatorExpression) {
+									EqualsOperatorExpression equalsOperatorExpression = (EqualsOperatorExpression) expression;
+									if (equalsOperatorExpression.getFirstOperand() instanceof PropertyCallExpression) {
+										PropertyCallExpression propertyCallExpression = (PropertyCallExpression) equalsOperatorExpression.getFirstOperand();
+										if (propertyCallExpression.getTargetExpression() instanceof NameExpression) {
+											ArrayList<Object> results = new ArrayList<Object>();
+											results.add(list.getType() + "." + propertyCallExpression.getPropertyNameExpression().getName() + "=" + 
+													context.getExecutorFactory().executeAST(equalsOperatorExpression.getSecondOperand(), context));
+											return results;
+										}
+									}
+								}
+								return new SelectOperation().execute(target, iterator, expression, context);
+							}
+						};
+					}
+					return null;
+				}
+			};
+		}
+		return null;
+	
+	}
 	
 	
 	public static void main(String[] args) throws URISyntaxException, Exception {

@@ -1,0 +1,11 @@
+var attr = new EAttribute;
+
+for(c in EDataType.all)
+{
+	if(c.name = "EString")
+	{
+		attr.eType = c;
+		c.println();
+		attr.println();
+	}
+}

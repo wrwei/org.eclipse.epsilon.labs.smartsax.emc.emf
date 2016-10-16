@@ -21,7 +21,7 @@ public class EmfGreedyModel extends EmfModel{
 		super.loadModelFromUri();
 		
 		//populateCaches();
-		populateCaches_v2();
+		//populateCaches_v2();
 	}
 	
 	
@@ -104,10 +104,10 @@ public class EmfGreedyModel extends EmfModel{
 	
 	public static void main(String[] args) throws URISyntaxException, Exception {
 		EolModule eolModule = new EolModule();
-		eolModule.parse(new File("test/set2_50percent.eol"));
+		eolModule.parse(new File("test/grabats.eol"));
 		
 		EmfGreedyModel greedyModel = new EmfGreedyModel();
-		greedyModel.setModelFile(new File("test/set2.xmi").getAbsolutePath());
+		greedyModel.setModelFile(new File("test/set4.xmi").getAbsolutePath());
 		greedyModel.setMetamodelFile(new File("test/JDTAST.ecore").getAbsolutePath());
 		greedyModel.setName("DOM");
 		
